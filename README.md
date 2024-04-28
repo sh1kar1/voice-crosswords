@@ -1,46 +1,50 @@
-# Getting Started with Create React App
+# Crosswords Canvas App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**Классические кроссворды с поддержкой голосового управления**
 
-## Available Scripts
+Смартап с виртуальным ассистентом Салют для платформы [SmartMarket](https://apps.sber.ru/salute-apps/)
 
-In the project directory, you can run:
+![](./assets/demo.png)
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Задачи
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- [ ] Хранение кроссвордов
+- [ ] Отображение кроссвордов
+- [ ] Интерактивность кроссвордов
+- [ ] Проверка решения кроссвордов
+- [ ] Меню выбора кроссвордов
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- [ ] Загрузка приложения в SmartMarket
+- [ ] Добавление ассистента в приложение
+- [ ] Голосовое управление приложением
+- [ ] Голосовой ввод слов
+- [ ] Озвучивание описаний слов
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- [ ] Добавление новых кроссвордов
+- [ ] Тестирование функционала
+- [ ] Проверка совместимости
+- [ ] Улучшение дизайна
+- [ ] Создание презентации
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Демо
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+![](./assets/demo.gif)
 
-### `npm run eject`
+## Технологии
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- TypeScript
+- ReactJS
+- SaluteJS
+- PlasmaUI
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Авторы
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+| Имя                                       | Вклад |
+|-------------------------------------------|-------|
+| [Каблов Н.А.](https://github.com/Sh1kar1) |       |
+| [Лопаткин А.А.]()                         |       |
+| [Попов А.Ю.]()                            |       |
