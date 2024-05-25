@@ -1,5 +1,3 @@
-import * as fs from 'fs';
-
 interface Word {
     text: string;
     desc: string;
@@ -8,7 +6,7 @@ interface Word {
     is_down: boolean;
 }
 
-class Crossword {
+export default class Crossword {
     words: Word[];
     h: number;
     w: number;
@@ -66,13 +64,15 @@ class Crossword {
     }
 }
 
-const crossword = new Crossword(JSON.parse(fs.readFileSync('./src/levels/1.json', 'utf-8')));
-
-console.log(`Size: ${crossword.h} x ${crossword.w}`);
-
-for (let i = 0; i < crossword.h; i++) {
-    console.log(crossword.board[i].join(' '));
-}
-
-console.log(`Down:\n${crossword.down_desc.join('\n')}`);
-console.log(`Across:\n${crossword.across_desc.join('\n')}`);
+// import * as fs from 'fs';
+//
+// const crossword = new Crossword(JSON.parse(fs.readFileSync('./src/levels/1.json', 'utf-8')));
+//
+// console.log(`Size: ${crossword.h} x ${crossword.w}`);
+//
+// for (let i = 0; i < crossword.h; i++) {
+//     console.log(crossword.board[i].join(' '));
+// }
+//
+// console.log(`Down:\n${crossword.down_desc.join('\n')}`);
+// console.log(`Across:\n${crossword.across_desc.join('\n')}`);
