@@ -11,6 +11,7 @@ export default class Crossword {
     rows: number;
     cols: number;
     board: string[][];
+    empty_board: string[][];
     down_desc: string[];
     across_desc: string[];
 
@@ -19,6 +20,7 @@ export default class Crossword {
         this.rows = 0;
         this.cols = 0;
         this.board = [];
+        this.empty_board = [];
         this.down_desc = [];
         this.across_desc = [];
         this.calc_size();
@@ -41,6 +43,7 @@ export default class Crossword {
     private create_board(): void {
         for (let i = 0; i < this.rows; i++) {
             this.board[i] = Array(this.cols).fill(' ');
+            this.empty_board[i] = Array(this.cols).fill(' ');
         }
         for (let word of this.words) {
             for (let i = 0; i < word.text.length; i++) {
@@ -49,6 +52,11 @@ export default class Crossword {
                 } else {
                     this.board[word.y][word.x + i] = word.text[i];
                 }
+            }
+        }
+        for (let i = 0; i < this.rows; i++) {
+            for (let j = 0; j < this.cols; j++) {
+                this.empty_board[i][j] = this.board[i][j] !== ' ' ? '' : ' ';
             }
         }
     }
