@@ -1,8 +1,8 @@
 interface Word {
     text: string;
     desc: string;
-    x: number;
-    y: number;
+    col: number;
+    row: number;
     is_down: boolean;
 }
 
@@ -31,11 +31,11 @@ export default class Crossword {
     private calc_size(): void {
         for (let word of this.words) {
             if (word.is_down) {
-                this.rows = Math.max(this.rows, word.y + word.text.length);
-                this.cols = Math.max(this.cols, word.x + 1);
+                this.rows = Math.max(this.rows, word.row + word.text.length);
+                this.cols = Math.max(this.cols, word.col + 1);
             } else {
-                this.rows = Math.max(this.rows, word.y + 1);
-                this.cols = Math.max(this.cols, word.x + word.text.length);
+                this.rows = Math.max(this.rows, word.row + 1);
+                this.cols = Math.max(this.cols, word.col + word.text.length);
             }
         }
     }
@@ -48,9 +48,9 @@ export default class Crossword {
         for (let word of this.words) {
             for (let i = 0; i < word.text.length; i++) {
                 if (word.is_down) {
-                    this.board[word.y + i][word.x] = word.text[i];
+                    this.board[word.row + i][word.col] = word.text[i];
                 } else {
-                    this.board[word.y][word.x + i] = word.text[i];
+                    this.board[word.row][word.col + i] = word.text[i];
                 }
             }
         }
