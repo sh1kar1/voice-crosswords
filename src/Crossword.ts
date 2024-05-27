@@ -14,6 +14,7 @@ export default class Crossword {
     empty_board: string[][];
     down_desc: string[];
     across_desc: string[];
+    words_idx: number[][];
 
     constructor(words: Word[]) {
         this.words = words;
@@ -23,9 +24,11 @@ export default class Crossword {
         this.empty_board = [];
         this.down_desc = [];
         this.across_desc = [];
+        this.words_idx = [];
         this.calc_size();
         this.create_board();
         this.create_description();
+        this.create_words_idx();
     }
 
     private calc_size(): void {
@@ -41,9 +44,9 @@ export default class Crossword {
     }
 
     private create_board(): void {
-        for (let i = 0; i < this.rows; i++) {
-            this.board[i] = Array(this.cols).fill(' ');
-            this.empty_board[i] = Array(this.cols).fill(' ');
+        for (let row = 0; row < this.rows; row++) {
+            this.board[row] = Array(this.cols).fill(' ');
+            this.empty_board[row] = Array(this.cols).fill(' ');
         }
         for (let word of this.words) {
             for (let i = 0; i < word.text.length; i++) {
@@ -54,9 +57,11 @@ export default class Crossword {
                 }
             }
         }
-        for (let i = 0; i < this.rows; i++) {
-            for (let j = 0; j < this.cols; j++) {
-                this.empty_board[i][j] = this.board[i][j] !== ' ' ? '' : ' ';
+        for (let row = 0; row < this.rows; row++) {
+            for (let col = 0; col < this.cols; col++) {
+                if (this.board[row][col] !== ' ') {
+                    this.empty_board[row][col] = '';
+                }
             }
         }
     }
@@ -67,6 +72,21 @@ export default class Crossword {
                 this.down_desc.push(`${i + 1}. ${this.words[i].desc}`);
             } else {
                 this.across_desc.push(`${i + 1}. ${this.words[i].desc}`);
+            }
+        }
+    }
+
+    private create_words_idx(): void {
+        for (let row = 0; row < this.rows; row++) {
+            this.words_idx[row] = Array(this.cols).fill(0);
+        }
+        for (let row = 0; row < this.rows; row++) {
+            for (let col = 0; col < this.cols; col++) {
+                for (let i = 0; i < this.words.length; i++) {
+                    if (this.words[i].row === row && this.words[i].col === col) {
+                        this.words_idx[row][col] = i + 1;
+                    }
+                }
             }
         }
     }
