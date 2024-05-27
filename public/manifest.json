@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Кроссворды",
+  "name": "Кроссворды с голосовым управлением",
   "icons": [
     {
       "src": "favicon.ico",
