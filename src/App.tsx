@@ -14,14 +14,18 @@ const App: React.FC = () => {
     input_refs.current = Array.from({ length: crossword.rows }, () => Array(crossword.cols).fill(0));
 
     const handle_key_down = (key: string, row: number, col: number) => {
-        if (key === 'ArrowRight' && col < crossword.cols - 1) {
+        if (key === 'ArrowRight' && col < crossword.cols - 1 && crossword.board[row][col + 1] !== ' ') {
             input_refs.current[row][col + 1]?.focus();
-        } else if (key === 'ArrowLeft' && col > 0) {
+            set_prev_move(1);
+        } else if (key === 'ArrowLeft' && col > 0 && crossword.board[row][col - 1] !== ' ') {
             input_refs.current[row][col - 1]?.focus();
-        } else if (key === 'ArrowDown' && row < crossword.rows - 1) {
+            set_prev_move(1);
+        } else if (key === 'ArrowDown' && row < crossword.rows - 1 && crossword.board[row + 1][col] !== ' ') {
             input_refs.current[row + 1][col]?.focus();
-        } else if (key === 'ArrowUp' && row > 0) {
+            set_prev_move(0);
+        } else if (key === 'ArrowUp' && row > 0 && crossword.board[row - 1][col] !== ' ') {
             input_refs.current[row - 1][col]?.focus();
+            set_prev_move(0);
 
         } else if (key === 'Backspace') {
             set_board(board.map((r, r_idx) => r_idx === row ? r.map((c, c_idx) => (c_idx === col ? '' : c)) : r));
