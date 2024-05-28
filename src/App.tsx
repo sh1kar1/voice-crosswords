@@ -1,76 +1,7 @@
 import React, { useState, useRef } from 'react';
-import styled from 'styled-components';
+import { Container, DescContainer, BoardContainer, Desc, Board, Cell, Index, Input } from './Components'
 import Crossword from './Crossword';
 import * as levels from './levels';
-
-const Container = styled.div`
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    height: 100vh;
-`;
-
-const DescContainer = styled.div`
-    margin: 0 5vw;
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    line-height: 1.5;
-    white-space: pre-wrap;
-`;
-
-const BoardContainer = styled.div`
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-`;
-
-const Desc = styled.div<{ is_focused: boolean }>`
-    padding: 0 5px;
-    border: ${({ is_focused }) => (is_focused ? '1px dotted black' : 'none')};
-`;
-
-const Board = styled.table`
-    border-collapse: collapse;
-`;
-
-const Cell = styled.td`
-    position: relative;
-    padding: 0;
-    border: ${({ content }) => (content !== ' ' ? '1px solid black' : 'none')};
-`;
-
-const Index = styled.div`
-    position: absolute;
-    top: 0;
-    left: 1px;
-    font-size: 10px;
-
-    &::selection {
-        background: transparent;
-    }
-`;
-
-const Input = styled.input`
-    border: hidden;
-    width: 30px;
-    height: 30px;
-    text-align: center;
-    font-size: 20px;
-    caret-color: transparent;
-    background-color: transparent;
-
-    &:focus {
-        outline: none;
-        box-shadow: 0 0 0 2px black;
-    }
-
-    &::selection {
-        background: transparent;
-    }
-`;
 
 const App: React.FC = () => {
     const crossword: Crossword = new Crossword(levels.l1);
@@ -86,9 +17,7 @@ const App: React.FC = () => {
 
     const handle_board_change = (row: number, col: number, val: string) => {
         const new_board = board.map((r, r_idx) => r_idx === row ? r.map((c, c_idx) => (c_idx === col ? val : c)) : r);
-        if ((/^[a-zа-я]*$/).test(val)) {
-            set_board(new_board);
-        }
+        set_board(new_board);
     };
 
     const handle_key_down = (e: React.KeyboardEvent<HTMLInputElement>, row: number, col: number) => {
