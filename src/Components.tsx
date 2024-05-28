@@ -8,25 +8,28 @@ export const Container = styled.div`
 `;
 
 export const DescContainer = styled.div`
-    margin: 0 5vw;
-    flex: 1;
     display: flex;
+    flex: 1;
     justify-content: center;
     align-items: center;
+    margin: 0 2vw;
+    
+    font-size: 1rem;
     line-height: 1.5;
     white-space: pre-wrap;
 `;
 
 export const BoardContainer = styled.div`
-    flex: 1;
     display: flex;
+    flex: 1;
     justify-content: center;
     align-items: center;
 `;
 
 export const Desc = styled.div<{ is_focused: boolean }>`
-    padding: 0 5px;
-    border: ${({ is_focused }) => (is_focused ? '1px dotted black' : 'none')};
+    padding: 0 0.3rem;
+    
+    border: ${({ is_focused }) => (is_focused ? '0.0625rem dotted black' : 'none')};
 `;
 
 export const Board = styled.table`
@@ -35,15 +38,18 @@ export const Board = styled.table`
 
 export const Cell = styled.td`
     position: relative;
+    
     padding: 0;
-    border: ${({ content }) => (content !== ' ' ? '1px solid black' : 'none')};
+    
+    border: ${({ content }) => (content !== ' ' ? '0.0625rem solid black' : 'none')};
 `;
 
 export const Index = styled.div`
     position: absolute;
     top: 0;
-    left: 1px;
-    font-size: 10px;
+    left: 0.0625rem;
+    
+    font-size: 0.625rem;
 
     &::selection {
         background: transparent;
@@ -51,17 +57,20 @@ export const Index = styled.div`
 `;
 
 export const Input = styled.input`
+    width: 1.875rem;
+    height: 1.875rem;
+    
     border: hidden;
-    width: 30px;
-    height: 30px;
-    text-align: center;
-    font-size: 20px;
-    caret-color: transparent;
+    
     background-color: transparent;
+    
+    font-size: 1.25rem;
+    text-align: center;
+    caret-color: transparent;
 
     &:focus {
         outline: none;
-        box-shadow: 0 0 0 2px black;
+        box-shadow: 0 0 0 0.125rem black;
     }
 
     &::selection {
