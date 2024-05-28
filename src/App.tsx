@@ -1,59 +1,106 @@
-import React, { useState, useRef } from 'react';
-import { Container, DescContainer, BoardContainer, Desc, Board, Cell, Index, Input } from './Components'
+import React, { useState, useRef, useEffect } from 'react';
+import { Container, DescContainer, BoardContainer, Desc, Board, Cell, Index, Input } from './Components';
 import Crossword from './Crossword';
 import * as levels from './levels';
 
 const App: React.FC = () => {
-    const crossword: Crossword = new Crossword(levels.l1);
-
-    const [board, set_board] = useState<string[][]>(crossword.empty_board);
-    const [focused, set_focused] = useState<number[]>([0, 0]);
-    const [prev_move, set_prev_move] = useState(0);
+    const [crossword, set_crossword] = useState<Crossword>(new Crossword(levels.l1));
+    const [board, set_board] = useState<string[][]>(crossword.board.map(row => [...row]));
+    const [mistakes, set_mistakes] = useState<boolean[][]>(Array.from({ length: crossword.rows }, () => Array(crossword.cols).fill(false)));
+    const [focused_word, set_focused_word] = useState<number[]>([0, 0]);
+    const [prev_move_down, set_prev_move_down] = useState<boolean>(false);
+    const [solved, set_solved] = useState<boolean>(false);
 
     const input_refs = useRef<(HTMLInputElement | null)[][]>([]);
-    input_refs.current = Array.from({ length: crossword.rows }, () => Array(crossword.cols).fill(0));
+    input_refs.current = Array.from({ length: crossword.rows }, () => Array(crossword.cols).fill(null));
 
-    const handle_key_down = (key: string, row: number, col: number) => {
-        if (key === 'ArrowRight' && col < crossword.cols - 1 && crossword.board[row][col + 1] !== ' ') {
-            input_refs.current[row][col + 1]?.focus();
-            set_prev_move(1);
-        } else if (key === 'ArrowLeft' && col > 0 && crossword.board[row][col - 1] !== ' ') {
-            input_refs.current[row][col - 1]?.focus();
-            set_prev_move(1);
-        } else if (key === 'ArrowDown' && row < crossword.rows - 1 && crossword.board[row + 1][col] !== ' ') {
-            input_refs.current[row + 1][col]?.focus();
-            set_prev_move(0);
-        } else if (key === 'ArrowUp' && row > 0 && crossword.board[row - 1][col] !== ' ') {
-            input_refs.current[row - 1][col]?.focus();
-            set_prev_move(0);
+    useEffect(() => {
+        const handle_key_down = (e: KeyboardEvent) => {
+            if (e.key === 'Enter') {
+                (document.activeElement as HTMLElement)?.blur();
+                const new_mistakes = Array.from({ length: crossword.rows }, () => Array(crossword.cols).fill(false));
+                let solve = true;
+                for (let row = 0; row < crossword.rows; row++) {
+                    for (let col = 0; col < crossword.cols; col++) {
+                        if (board[row][col] !== crossword.board[row][col]) {
+                            new_mistakes[row][col] = true;
+                            solve = false;
+                        }
+                    }
+                }
+                set_mistakes(new_mistakes);
+                set_solved(solve);
+            }
+        };
+        window.addEventListener('keydown', handle_key_down);
+        return () => window.removeEventListener('keydown', handle_key_down);
+    }, [board]);
 
-        } else if (key === 'Backspace') {
-            set_board(board.map((r, r_idx) => r_idx === row ? r.map((c, c_idx) => (c_idx === col ? '' : c)) : r));
-            const move_up = focused[0] !== 0 && row > 0 && crossword.board[row - 1][col] !== ' ' && crossword.words[focused[0] - 1].is_down;
-            const move_left = focused[1] !== 0 && col > 0 && crossword.board[row][col - 1] !== ' ' && !crossword.words[focused[1] - 1].is_down;
+    const handle_input_key_down = (row: number, col: number, key: string) => {
+        const change_board = (val: string) => {
+            const new_board = board.map(row => [...row]);
+            new_board[row][col] = val;
+            set_board(new_board);
+        };
+
+        const change_mistakes = (val: boolean) => {
+            const new_mistakes = mistakes.map(row => [...row]);
+            new_mistakes[row][col] = val;
+            set_mistakes(new_mistakes);
+        };
+
+        const move_up_left = () => {
+            const move_up = focused_word[0] !== 0 && row > 0 && board[row - 1][col] !== ' ' && crossword.words[focused_word[0] - 1].is_down;
+            const move_left = focused_word[1] !== 0 && col > 0 && board[row][col - 1] !== ' ' && !crossword.words[focused_word[1] - 1].is_down;
             if (move_up && move_left) {
-                prev_move === 0 ? input_refs.current[row - 1][col]?.focus() : input_refs.current[row][col - 1]?.focus();
+                !prev_move_down ? input_refs.current[row - 1][col]?.focus() : input_refs.current[row][col - 1]?.focus();
             } else if (move_up) {
                 input_refs.current[row - 1][col]?.focus();
-                set_prev_move(0);
+                set_prev_move_down(false);
             } else if (move_left) {
                 input_refs.current[row][col - 1]?.focus();
-                set_prev_move(1);
+                set_prev_move_down(true);
             }
+        };
 
-        } else if ((/^[a-zа-я]*$/).test(key)) {
-            set_board(board.map((r, r_idx) => r_idx === row ? r.map((c, c_idx) => (c_idx === col ? key : c)) : r));
-            const move_down = focused[0] !== 0 && row < crossword.rows - 1 && crossword.board[row + 1][col] !== ' ' && crossword.words[focused[0] - 1].is_down;
-            const move_right = focused[1] !== 0 && col < crossword.cols - 1 && crossword.board[row][col + 1] !== ' ' && !crossword.words[focused[1] - 1].is_down;
+        const move_down_right = () => {
+            const move_down = focused_word[0] !== 0 && row < crossword.rows - 1 && board[row + 1][col] !== ' ' && crossword.words[focused_word[0] - 1].is_down;
+            const move_right = focused_word[1] !== 0 && col < crossword.cols - 1 && board[row][col + 1] !== ' ' && !crossword.words[focused_word[1] - 1].is_down;
             if (move_down && move_right) {
-                prev_move === 0 ? input_refs.current[row + 1][col]?.focus() : input_refs.current[row][col + 1]?.focus();
+                !prev_move_down ? input_refs.current[row + 1][col]?.focus() : input_refs.current[row][col + 1]?.focus();
             } else if (move_down) {
                 input_refs.current[row + 1][col]?.focus();
-                set_prev_move(0);
+                set_prev_move_down(false);
             } else if (move_right) {
                 input_refs.current[row][col + 1]?.focus();
-                set_prev_move(1);
+                set_prev_move_down(true);
             }
+        };
+
+        if (key === 'ArrowRight' && col < crossword.cols - 1 && board[row][col + 1] !== ' ') {
+            input_refs.current[row][col + 1]?.focus();
+            set_prev_move_down(true);
+        } else if (key === 'ArrowLeft' && col > 0 && board[row][col - 1] !== ' ') {
+            input_refs.current[row][col - 1]?.focus();
+            set_prev_move_down(true);
+        } else if (key === 'ArrowDown' && row < crossword.rows - 1 && board[row + 1][col] !== ' ') {
+            input_refs.current[row + 1][col]?.focus();
+            set_prev_move_down(false);
+        } else if (key === 'ArrowUp' && row > 0 && board[row - 1][col] !== ' ') {
+            input_refs.current[row - 1][col]?.focus();
+            set_prev_move_down(false);
+        } else if (key === 'Backspace') {
+            change_board('');
+            change_mistakes(false);
+            move_up_left();
+        } else if (key === ' ') {
+            change_board('');
+            change_mistakes(false);
+            move_down_right();
+        } else if ((/^[a-zа-я]*$/).test(key)) {
+            change_board(key);
+            change_mistakes(false);
+            move_down_right()
         }
     };
 
@@ -63,7 +110,7 @@ const App: React.FC = () => {
                 <div>
                     <Desc is_focused={false}><strong>По вертикали:</strong></Desc>
                     {crossword.down_desc.map((desc, idx) => (
-                        <Desc key={idx} is_focused={crossword.desc_to_idx[0][idx] === focused[0]}>{desc}</Desc>
+                        <Desc key={idx} is_focused={crossword.desc_to_idx[0][idx] === focused_word[0]}>{desc}</Desc>
                     ))}
                 </div>
             </DescContainer>
@@ -78,13 +125,16 @@ const App: React.FC = () => {
                                         <Index>{crossword.words_start_idx[row_idx][col_idx]}</Index>}
                                     <Input
                                         hidden={cell === ' '}
+                                        disabled={solved}
                                         type='text'
                                         value={cell}
                                         maxLength={1}
                                         ref={(el) => input_refs.current[row_idx][col_idx] = el}
-                                        onFocus={() => set_focused(crossword.words_idx[row_idx][col_idx])}
-                                        onBlur={() => set_focused([0, 0])}
-                                        onKeyDown={(e) => { e.preventDefault(); handle_key_down(e.key, row_idx, col_idx); }}
+                                        is_mistake={mistakes[row_idx][col_idx]}
+                                        is_solved={solved}
+                                        onFocus={() => set_focused_word(crossword.words_idx[row_idx][col_idx])}
+                                        onBlur={() => set_focused_word([0, 0])}
+                                        onKeyDown={(e) => { e.preventDefault(); handle_input_key_down(row_idx, col_idx, e.key); }}
                                     />
                                 </Cell>
                             ))}
@@ -97,7 +147,7 @@ const App: React.FC = () => {
                 <div>
                     <Desc is_focused={false}><strong>По горизонтали:</strong></Desc>
                     {crossword.across_desc.map((desc, idx) => (
-                        <Desc key={idx} is_focused={crossword.desc_to_idx[1][idx] === focused[1]}>{desc}</Desc>
+                        <Desc key={idx} is_focused={crossword.desc_to_idx[1][idx] === focused_word[1]}>{desc}</Desc>
                     ))}
                 </div>
             </DescContainer>

@@ -56,7 +56,7 @@ export const Index = styled.div`
     }
 `;
 
-export const Input = styled.input`
+export const Input = styled.input<{ is_mistake: boolean, is_solved: boolean }>`
     width: 1.875rem;
     height: 1.875rem;
     
@@ -64,6 +64,7 @@ export const Input = styled.input`
     
     background-color: transparent;
     
+    color: ${({ is_mistake, is_solved }) => (is_mistake ? 'crimson' : (is_solved ? 'seagreen' : 'black'))};
     font-size: 1.25rem;
     text-align: center;
     caret-color: transparent;
