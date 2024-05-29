@@ -1,4 +1,5 @@
 interface Word {
+    n: number;
     text: string;
     desc: string;
     col: number;
@@ -14,9 +15,10 @@ export default class Crossword {
     empty_board: string[][];
     down_desc: string[];
     across_desc: string[];
-    words_idx: number[][][];
-    words_start_idx: number[][];
-    desc_to_idx: number[][];
+    words_n: number[][][];
+    words_start_n: number[][];
+    desc_to_n: number[][];
+    n_to_idx: number[][];
 
     constructor(words: Word[]) {
         this.words = words;
@@ -31,12 +33,15 @@ export default class Crossword {
 
         this.down_desc = [];
         this.across_desc = [];
-        this.desc_to_idx = Array.from({ length: 2 }, () => Array(this.words.length).fill(0));
+        this.desc_to_n = Array.from({ length: 2 }, () => Array(this.words.length).fill(0));
         this.create_description();
 
-        this.words_idx = Array.from({ length: this.rows }, () => Array.from({ length: this.cols }, () => Array(2).fill(0)));
-        this.words_start_idx = Array.from({ length: this.rows }, () => Array(this.cols).fill(0));
-        this.create_words_idx();
+        this.words_n = Array.from({ length: this.rows }, () => Array.from({ length: this.cols }, () => Array(2).fill(0)));
+        this.words_start_n = Array.from({ length: this.rows }, () => Array(this.cols).fill(0));
+        this.create_words_n();
+
+        this.n_to_idx = Array.from({ length: 2 }, () => Array(this.words[this.words.length - 1].n + 1).fill(0));
+        this.create_n_to_idx();
     }
 
     private calc_size(): void {
@@ -56,24 +61,30 @@ export default class Crossword {
     }
 
     private create_description(): void {
-        for (let [i, word] of this.words.entries()) {
-            (word.is_down ? this.down_desc : this.across_desc).push(`${i + 1}.${i + 1 < 10 ? '   ' : ' '}${word.desc}`);
-            this.desc_to_idx[word.is_down ? 0 : 1][(word.is_down ? this.down_desc : this.across_desc).length - 1] = i + 1;
+        for (let word of this.words) {
+            (word.is_down ? this.down_desc : this.across_desc).push(`${word.n}.${word.n < 10 ? '   ' : ' '}${word.desc}`);
+            this.desc_to_n[word.is_down ? 0 : 1][(word.is_down ? this.down_desc : this.across_desc).length - 1] = word.n;
         }
     }
 
-    private create_words_idx(): void {
+    private create_words_n(): void {
         for (let row = 0; row < this.rows; row++) {
             for (let col = 0; col < this.cols; col++) {
-                for (let [i, word] of this.words.entries()) {
+                for (let word of this.words) {
                     if (word.row === row && word.col === col) {
-                        this.words_start_idx[row][col] = i + 1;
+                        this.words_start_n[row][col] = word.n;
                         for (let j = 0; j < word.text.length; j++) {
-                            this.words_idx[row + (word.is_down ? j : 0)][col + (!word.is_down ? j : 0)][word.is_down ? 0 : 1] = i + 1;
+                            this.words_n[row + (word.is_down ? j : 0)][col + (!word.is_down ? j : 0)][word.is_down ? 0 : 1] = word.n;
                         }
                     }
                 }
             }
+        }
+    }
+
+    private create_n_to_idx(): void {
+        for (let [i, word] of this.words.entries()) {
+            this.n_to_idx[word.is_down ? 0 : 1][word.n] = i;
         }
     }
 }

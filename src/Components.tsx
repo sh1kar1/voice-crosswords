@@ -27,13 +27,16 @@ export const BoardContainer = styled.div`
 `;
 
 export const Desc = styled.div<{ is_focused: boolean }>`
-    padding: 0 0.3rem;
+    padding: 0 0.25rem;
     
-    border: ${({ is_focused }) => (is_focused ? '0.0625rem dotted black' : 'none')};
+    border: ${({ is_focused }) => (is_focused ? '0.1rem dashed black' : 'none')};
 `;
 
 export const Board = styled.table`
+    border: 0.05rem solid black;
     border-collapse: collapse;
+    
+    background-color: whitesmoke;
 `;
 
 export const Cell = styled.td`
@@ -41,37 +44,37 @@ export const Cell = styled.td`
     
     padding: 0;
     
-    border: ${({ content }) => (content !== ' ' ? '0.0625rem solid black' : 'none')};
+    border: ${({ content }) => (content !== ' ' ? '0.05rem solid black' : 'none')};
 `;
 
 export const Index = styled.div`
     position: absolute;
-    top: 0;
-    left: 0.0625rem;
+    top: 0.05rem;
+    left: 0.05rem;
     
-    font-size: 0.625rem;
+    font-size: 0.7rem;
 
     &::selection {
         background: transparent;
     }
 `;
 
-export const Input = styled.input<{ is_mistake: boolean, is_solved: boolean }>`
-    width: 1.875rem;
-    height: 1.875rem;
+export const Input = styled.input<{ is_word: boolean, is_mistake: boolean, is_solved: boolean }>`
+    width: 2.5rem;
+    height: 2.5rem;
     
     border: hidden;
     
-    background-color: transparent;
+    background-color: ${({ is_word }) => (is_word ? '#E5E5E5' : 'white')};
     
     color: ${({ is_mistake, is_solved }) => (is_mistake ? 'crimson' : (is_solved ? 'seagreen' : 'black'))};
-    font-size: 1.25rem;
+    font-size: 1.75rem;
     text-align: center;
     caret-color: transparent;
 
     &:focus {
+        border: 0.15rem solid black;
         outline: none;
-        box-shadow: 0 0 0 0.125rem black;
     }
 
     &::selection {
