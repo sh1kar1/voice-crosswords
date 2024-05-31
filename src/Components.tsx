@@ -5,6 +5,8 @@ export const Container = styled.div`
     justify-content: space-evenly;
     align-items: center;
     height: 100vh;
+    
+    background-color: whitesmoke;
 `;
 
 export const DescContainer = styled.div`
@@ -33,10 +35,7 @@ export const Desc = styled.div<{ is_focused: boolean }>`
 `;
 
 export const Board = styled.table`
-    border: 0.05rem solid black;
     border-collapse: collapse;
-    
-    background-color: whitesmoke;
 `;
 
 export const Cell = styled.td`
@@ -65,11 +64,13 @@ export const Input = styled.input<{ is_word: boolean, is_mistake: boolean, is_so
     
     border: hidden;
     
-    background-color: ${({ is_word }) => (is_word ? '#E5E5E5' : 'white')};
+    background-color: ${({ is_word }) => (is_word ? 'aliceblue' : 'white')};
     
     color: ${({ is_mistake, is_solved }) => (is_mistake ? 'crimson' : (is_solved ? 'seagreen' : 'black'))};
     font-size: 1.75rem;
     text-align: center;
+    
+    cursor: pointer;
     caret-color: transparent;
 
     &:focus {
