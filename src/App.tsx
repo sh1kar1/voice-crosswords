@@ -9,6 +9,7 @@ const App: React.FC = () => {
     const [board, set_board] = useState<string[][]>(crossword.board.map(row => [...row]));
     const [mistakes, set_mistakes] = useState<boolean[][]>(Array.from({ length: crossword.rows }, () => Array(crossword.cols).fill(false)));
     const [focused_word, set_focused_word] = useState<number[]>([0, 0]);
+    const [focused_cell, set_focused_cell] = useState<number[]>([-1, -1]);
     const [prev_move_across, set_prev_move_across] = useState<boolean>(false);
     const [solved, set_solved] = useState<boolean>(false);
 
@@ -128,8 +129,7 @@ const App: React.FC = () => {
                         <tr key={row_idx}>
                             {row.map((cell, col_idx) => (
                                 <Cell key={col_idx} content={cell}>
-                                    {crossword.words_start_n[row_idx][col_idx] !== 0 &&
-                                        <Index hidden={crossword.words_n[row_idx][col_idx][0] === focused_word[0] && focused_word[0] !== 0 || crossword.words_n[row_idx][col_idx][1] === focused_word[1] && focused_word[1] !== 0}>{crossword.words_start_n[row_idx][col_idx]}</Index>}
+                                    <Index hidden={crossword.words_start_n[row_idx][col_idx] === 0 || focused_cell[0] === row_idx && focused_cell[1] === col_idx}>{crossword.words_start_n[row_idx][col_idx]}</Index>
                                     <Input
                                         hidden={cell === ' '}
                                         disabled={solved}
@@ -137,11 +137,11 @@ const App: React.FC = () => {
                                         value={cell}
                                         maxLength={1}
                                         ref={(el) => input_refs.current[row_idx][col_idx] = el}
-                                        is_word={crossword.words_n[row_idx][col_idx][0] === focused_word[0] && focused_word[0] !== 0 || crossword.words_n[row_idx][col_idx][1] === focused_word[1] && focused_word[1] !== 0}
+                                        is_word={focused_word[0] !== 0 && crossword.words_n[row_idx][col_idx][0] === focused_word[0] || focused_word[1] !== 0 && crossword.words_n[row_idx][col_idx][1] === focused_word[1]}
                                         is_mistake={mistakes[row_idx][col_idx]}
                                         is_solved={solved}
-                                        onFocus={() => set_focused_word(crossword.words_n[row_idx][col_idx])}
-                                        onBlur={() => set_focused_word([0, 0])}
+                                        onFocus={() => { set_focused_word(crossword.words_n[row_idx][col_idx]); set_focused_cell([row_idx, col_idx]); }}
+                                        onBlur={() => { set_focused_word([0, 0]); set_focused_cell([-1, -1]); }}
                                         onKeyDown={(e) => { e.preventDefault(); handle_input_key_down(row_idx, col_idx, e.key); }}
                                     />
                                 </Cell>
