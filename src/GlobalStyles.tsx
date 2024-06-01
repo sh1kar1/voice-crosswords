@@ -21,6 +21,30 @@ const GlobalStyle = createGlobalStyle`
         height: auto;
         display: block;
     }
+    
+    @media (max-width: 599px) {
+        :root {
+            font-size: 8px;
+        }
+    }
+    
+    @media (min-width: 600px) and (max-width: 1023px) {
+        :root {
+            font-size: 12px;
+        }
+    }
+    
+    @media (min-width: 1024px) and (max-width: 1199px) {
+        :root {
+            font-size: 16px;
+        }
+    }
+    
+    @media (min-width: 1200px) {
+        :root {
+            font-size: 20px;
+        }
+    }
 `;
 
 export default GlobalStyle;

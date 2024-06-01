@@ -1,12 +1,19 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
+export const AppContainer = styled.div`
+    background-color: whitesmoke;
+`;
+
+export const LevelContainer = styled.div`
     display: flex;
     justify-content: space-evenly;
     align-items: center;
     height: 100vh;
     
-    background-color: whitesmoke;
+    @media (orientation: portrait) {
+        flex-direction: column;
+        justify-content: normal;
+    }
 `;
 
 export const DescContainer = styled.div`
@@ -19,6 +26,16 @@ export const DescContainer = styled.div`
     font-size: 1rem;
     line-height: 1.5;
     white-space: pre-wrap;
+    
+    @media (orientation: portrait) {
+        flex: none;
+        order: 1;
+        justify-content: flex-start;
+        width: 100vw;
+        margin: 2vw;
+        
+        font-size: 1.5rem;
+    }
 `;
 
 export const BoardContainer = styled.div`
@@ -26,6 +43,12 @@ export const BoardContainer = styled.div`
     flex: 1;
     justify-content: center;
     align-items: center;
+    
+    @media (orientation: portrait) {
+        flex: none;
+        width: 100vw;
+        margin: 2vw;
+    }
 `;
 
 export const Desc = styled.div<{ is_focused: boolean }>`
