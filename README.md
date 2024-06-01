@@ -50,3 +50,4 @@
 | [Каблов Никита](https://github.com/Sh1kar1)        |       |
 | [Лопаткин Антон](https://github.com/lopatkinanton) |       |
 | [Попов Артемий](https://github.com/cymdaspec)      |       |
+| [Пинкас Андрей](https://github.com/mob1324)        |       |
