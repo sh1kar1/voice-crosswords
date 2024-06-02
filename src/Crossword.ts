@@ -87,4 +87,32 @@ export default class Crossword {
             this.n_to_idx[word.is_down ? 0 : 1][word.n] = i;
         }
     }
+
+    public can_move_up(focused_word_down: number, row: number, col: number, board: string[][]): boolean {
+        return focused_word_down !== 0 && row > 0 && board[row - 1][col] !== ' ' && this.words[this.n_to_idx[0][focused_word_down]].is_down;
+    }
+
+    public can_move_left(focused_word_across: number, row: number, col: number, board: string[][]): boolean {
+        return focused_word_across !== 0 && col > 0 && board[row][col - 1] !== ' ' && !this.words[this.n_to_idx[1][focused_word_across]].is_down;
+    }
+
+    public can_move_down(focused_word_down: number, row: number, col: number, board: string[][]): boolean {
+        return focused_word_down !== 0 && row < this.rows - 1 && board[row + 1][col] !== ' ' && this.words[this.n_to_idx[0][focused_word_down]].is_down;
+    }
+
+    public can_move_right(focused_word_across: number, row: number, col: number, board: string[][]): boolean {
+        return focused_word_across !== 0 && col < this.cols - 1 && board[row][col + 1] !== ' ' && !this.words[this.n_to_idx[1][focused_word_across]].is_down;
+    }
+
+    public desc_on_focus(is_down: boolean, focused_word: number[], desc_idx: number): boolean {
+        return this.desc_to_n[is_down ? 0 : 1][desc_idx] === focused_word[is_down ? 0 : 1];
+    }
+
+    public index_on_focus(focused_cell_down: number, focused_cell_across: number, row: number, col: number): boolean {
+        return this.words_start_n[row][col] === 0 || (focused_cell_down === row && focused_cell_across === col);
+    }
+
+    public cell_in_word(focused_word_down: number, focused_word_across: number, row: number, col: number): boolean {
+        return (focused_word_down !== 0 && this.words_n[row][col][0] === focused_word_down) || (focused_word_across !== 0 && this.words_n[row][col][1] === focused_word_across);
+    }
 }

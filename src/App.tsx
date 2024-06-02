@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { AppContainer, ButtonContainer, LevelContainer, DescContainer, BoardContainer, Title, Subtitle, ButtonIndex, ButtonDesc, Button, DescHeader, Desc, Board, Cell, Index, Input } from './Components';
+import { ButtonContainer, LevelContainer, DescContainer, BoardContainer, Title, Subtitle, ButtonIndex, ButtonDesc, Button, DescHeader, Desc, Board, Cell, Index, Input } from './Components';
 import Crossword from './Crossword';
 import * as l from './Levels';
 const levels = [l.l1, l.l2, l.l3, l.l4, l.l5, l.l6, l.l7, l.l8, l.l9, l.l10];
@@ -54,8 +54,8 @@ const Level: React.FC<{ level: number, set_level: any }> = ({ level, set_level }
         };
 
         const move_up_left = () => {
-            const move_up = focused_word[0] !== 0 && row > 0 && board[row - 1][col] !== ' ' && crossword.words[crossword.n_to_idx[0][focused_word[0]]].is_down;
-            const move_left = focused_word[1] !== 0 && col > 0 && board[row][col - 1] !== ' ' && !crossword.words[crossword.n_to_idx[1][focused_word[1]]].is_down;
+            const move_up = crossword.can_move_up(focused_word[0], row, col, board);
+            const move_left = crossword.can_move_left(focused_word[1], row, col, board);
             if (move_up && move_left) {
                 !prev_move_across ? input_refs.current[row - 1][col]?.focus() : input_refs.current[row][col - 1]?.focus();
             } else if (move_up) {
@@ -68,8 +68,8 @@ const Level: React.FC<{ level: number, set_level: any }> = ({ level, set_level }
         };
 
         const move_down_right = () => {
-            const move_down = focused_word[0] !== 0 && row < crossword.rows - 1 && board[row + 1][col] !== ' ' && crossword.words[crossword.n_to_idx[0][focused_word[0]]].is_down;
-            const move_right = focused_word[1] !== 0 && col < crossword.cols - 1 && board[row][col + 1] !== ' ' && !crossword.words[crossword.n_to_idx[1][focused_word[1]]].is_down;
+            const move_down = crossword.can_move_down(focused_word[0], row, col, board);
+            const move_right = crossword.can_move_right(focused_word[1], row, col, board);
             if (move_down && move_right) {
                 !prev_move_across ? input_refs.current[row + 1][col]?.focus() : input_refs.current[row][col + 1]?.focus();
             } else if (move_down) {
@@ -115,8 +115,8 @@ const Level: React.FC<{ level: number, set_level: any }> = ({ level, set_level }
             <DescContainer>
                 <div>
                     <DescHeader>По вертикали:</DescHeader>
-                    {crossword.down_desc.map((desc, idx) => (
-                        <Desc key={idx} is_focused={crossword.desc_to_n[0][idx] === focused_word[0]}>{desc}</Desc>
+                    {crossword.down_desc.map((desc, desc_idx) => (
+                        <Desc key={desc_idx} is_focused={crossword.desc_on_focus(true, focused_word, desc_idx)}>{desc}</Desc>
                     ))}
                 </div>
             </DescContainer>
@@ -127,7 +127,7 @@ const Level: React.FC<{ level: number, set_level: any }> = ({ level, set_level }
                         <tr key={row_idx}>
                             {row.map((cell, col_idx) => (
                                 <Cell key={col_idx} content={cell}>
-                                    <Index hidden={crossword.words_start_n[row_idx][col_idx] === 0 || focused_cell[0] === row_idx && focused_cell[1] === col_idx}>{crossword.words_start_n[row_idx][col_idx]}</Index>
+                                    <Index hidden={crossword.index_on_focus(focused_cell[0], focused_cell[1], row_idx, col_idx)}>{crossword.words_start_n[row_idx][col_idx]}</Index>
                                     <Input
                                         hidden={cell === ' '}
                                         disabled={solved}
@@ -135,7 +135,7 @@ const Level: React.FC<{ level: number, set_level: any }> = ({ level, set_level }
                                         value={cell}
                                         maxLength={1}
                                         ref={(el) => input_refs.current[row_idx][col_idx] = el}
-                                        is_word={focused_word[0] !== 0 && crossword.words_n[row_idx][col_idx][0] === focused_word[0] || focused_word[1] !== 0 && crossword.words_n[row_idx][col_idx][1] === focused_word[1]}
+                                        is_word={crossword.cell_in_word(focused_word[0], focused_word[1], row_idx, col_idx)}
                                         is_mistake={mistakes[row_idx][col_idx]}
                                         is_solved={solved}
                                         onFocus={() => { set_focused_word(crossword.words_n[row_idx][col_idx]); set_focused_cell([row_idx, col_idx]); }}
@@ -153,8 +153,8 @@ const Level: React.FC<{ level: number, set_level: any }> = ({ level, set_level }
             <DescContainer>
                 <div>
                     <DescHeader>По горизонтали:</DescHeader>
-                    {crossword.across_desc.map((desc, idx) => (
-                        <Desc key={idx} is_focused={crossword.desc_to_n[1][idx] === focused_word[1]}>{desc}</Desc>
+                    {crossword.across_desc.map((desc, desc_idx) => (
+                        <Desc key={desc_idx} is_focused={crossword.desc_on_focus(false, focused_word, desc_idx)}>{desc}</Desc>
                     ))}
                 </div>
             </DescContainer>
@@ -166,7 +166,7 @@ const App: React.FC = () => {
     const [level, set_level] = useState<number>(0);
 
     return (
-        <AppContainer>
+        <>
             {level === 0 ? (
                 <div>
                     <Title>Кроссворды</Title>
@@ -183,7 +183,7 @@ const App: React.FC = () => {
             ) : (
                 <Level key={level} level={level - 1} set_level={set_level} />
             )}
-        </AppContainer>
+        </>
     );
 };
 
