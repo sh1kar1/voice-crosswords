@@ -1,118 +1,118 @@
 interface Word {
-    n: number;
-    text: string;
-    desc: string;
-    col: number;
-    row: number;
-    is_down: boolean;
+  n: number;
+  text: string;
+  desc: string;
+  col: number;
+  row: number;
+  isDown: boolean;
 }
 
 export default class Crossword {
-    words: Word[];
-    rows: number;
-    cols: number;
-    board: string[][];
-    empty_board: string[][];
-    down_desc: string[];
-    across_desc: string[];
-    words_n: number[][][];
-    words_start_n: number[][];
-    desc_to_n: number[][];
-    n_to_idx: number[][];
+  words: Word[];
+  rows: number;
+  cols: number;
+  board: string[][];
+  emptyBoard: string[][];
+  downDesc: string[];
+  acrossDesc: string[];
+  wordsN: number[][][];
+  wordsStartN: number[][];
+  descToN: number[][];
+  nToIdx: number[][];
 
-    constructor(words: Word[]) {
-        this.words = words;
+  constructor(words: Word[]) {
+    this.words = words;
 
-        this.rows = 0;
-        this.cols = 0;
-        this.calc_size();
+    this.rows = 0;
+    this.cols = 0;
+    this.calcSize();
 
-        this.board = Array.from({ length: this.rows }, () => Array(this.cols).fill(' '));
-        this.empty_board = Array.from({ length: this.rows }, () => Array(this.cols).fill(' '));
-        this.create_board();
+    this.board = Array.from({ length: this.rows }, () => Array(this.cols).fill(' '));
+    this.emptyBoard = Array.from({ length: this.rows }, () => Array(this.cols).fill(' '));
+    this.createBoard();
 
-        this.down_desc = [];
-        this.across_desc = [];
-        this.desc_to_n = Array.from({ length: 2 }, () => Array(this.words.length).fill(0));
-        this.create_description();
+    this.downDesc = [];
+    this.acrossDesc = [];
+    this.descToN = Array.from({ length: 2 }, () => Array(this.words.length).fill(0));
+    this.createDescription();
 
-        this.words_n = Array.from({ length: this.rows }, () => Array.from({ length: this.cols }, () => Array(2).fill(0)));
-        this.words_start_n = Array.from({ length: this.rows }, () => Array(this.cols).fill(0));
-        this.create_words_n();
+    this.wordsN = Array.from({ length: this.rows }, () => Array.from({ length: this.cols }, () => Array(2).fill(0)));
+    this.wordsStartN = Array.from({ length: this.rows }, () => Array(this.cols).fill(0));
+    this.createWordsN();
 
-        this.n_to_idx = Array.from({ length: 2 }, () => Array(this.words[this.words.length - 1].n + 1).fill(0));
-        this.create_n_to_idx();
+    this.nToIdx = Array.from({ length: 2 }, () => Array(this.words[this.words.length - 1].n + 1).fill(0));
+    this.createNToIdx();
+  }
+
+  private calcSize(): void {
+    for (let word of this.words) {
+      this.rows = word.isDown ? Math.max(this.rows, word.row + word.text.length) : Math.max(this.rows, word.row + 1);
+      this.cols = word.isDown ? Math.max(this.cols, word.col + 1) : Math.max(this.cols, word.col + word.text.length);
     }
+  }
 
-    private calc_size(): void {
-        for (let word of this.words) {
-            this.rows = word.is_down ? Math.max(this.rows, word.row + word.text.length) : Math.max(this.rows, word.row + 1);
-            this.cols = word.is_down ? Math.max(this.cols, word.col + 1) : Math.max(this.cols, word.col + word.text.length);
-        }
+  private createBoard(): void {
+    for (let word of this.words) {
+      for (let i = 0; i < word.text.length; i++) {
+        this.board[word.row + (word.isDown ? i : 0)][word.col + (!word.isDown ? i : 0)] = word.text[i];
+        this.emptyBoard[word.row + (word.isDown ? i : 0)][word.col + (!word.isDown ? i : 0)] = '';
+      }
     }
+  }
 
-    private create_board(): void {
+  private createDescription(): void {
+    for (let word of this.words) {
+      (word.isDown ? this.downDesc : this.acrossDesc).push(`${word.n}.${word.n < 10 ? '   ' : ' '}${word.desc}`);
+      this.descToN[word.isDown ? 0 : 1][(word.isDown ? this.downDesc : this.acrossDesc).length - 1] = word.n;
+    }
+  }
+
+  private createWordsN(): void {
+    for (let row = 0; row < this.rows; row++) {
+      for (let col = 0; col < this.cols; col++) {
         for (let word of this.words) {
-            for (let i = 0; i < word.text.length; i++) {
-                this.board[word.row + (word.is_down ? i : 0)][word.col + (!word.is_down ? i : 0)] = word.text[i];
-                this.empty_board[word.row + (word.is_down ? i : 0)][word.col + (!word.is_down ? i : 0)] = '';
+          if (word.row === row && word.col === col) {
+            this.wordsStartN[row][col] = word.n;
+            for (let j = 0; j < word.text.length; j++) {
+              this.wordsN[row + (word.isDown ? j : 0)][col + (!word.isDown ? j : 0)][word.isDown ? 0 : 1] = word.n;
             }
+          }
         }
+      }
     }
+  }
 
-    private create_description(): void {
-        for (let word of this.words) {
-            (word.is_down ? this.down_desc : this.across_desc).push(`${word.n}.${word.n < 10 ? '   ' : ' '}${word.desc}`);
-            this.desc_to_n[word.is_down ? 0 : 1][(word.is_down ? this.down_desc : this.across_desc).length - 1] = word.n;
-        }
+  private createNToIdx(): void {
+    for (let [i, word] of this.words.entries()) {
+      this.nToIdx[word.isDown ? 0 : 1][word.n] = i;
     }
+  }
 
-    private create_words_n(): void {
-        for (let row = 0; row < this.rows; row++) {
-            for (let col = 0; col < this.cols; col++) {
-                for (let word of this.words) {
-                    if (word.row === row && word.col === col) {
-                        this.words_start_n[row][col] = word.n;
-                        for (let j = 0; j < word.text.length; j++) {
-                            this.words_n[row + (word.is_down ? j : 0)][col + (!word.is_down ? j : 0)][word.is_down ? 0 : 1] = word.n;
-                        }
-                    }
-                }
-            }
-        }
-    }
+  public canMoveUp(focusedWordDown: number, row: number, col: number, board: string[][]): boolean {
+    return focusedWordDown !== 0 && row > 0 && board[row - 1][col] !== ' ' && this.words[this.nToIdx[0][focusedWordDown]].isDown;
+  }
 
-    private create_n_to_idx(): void {
-        for (let [i, word] of this.words.entries()) {
-            this.n_to_idx[word.is_down ? 0 : 1][word.n] = i;
-        }
-    }
+  public canMoveLeft(focusedWordAcross: number, row: number, col: number, board: string[][]): boolean {
+    return focusedWordAcross !== 0 && col > 0 && board[row][col - 1] !== ' ' && !this.words[this.nToIdx[1][focusedWordAcross]].isDown;
+  }
 
-    public can_move_up(focused_word_down: number, row: number, col: number, board: string[][]): boolean {
-        return focused_word_down !== 0 && row > 0 && board[row - 1][col] !== ' ' && this.words[this.n_to_idx[0][focused_word_down]].is_down;
-    }
+  public canMoveDown(focusedWordDown: number, row: number, col: number, board: string[][]): boolean {
+    return focusedWordDown !== 0 && row < this.rows - 1 && board[row + 1][col] !== ' ' && this.words[this.nToIdx[0][focusedWordDown]].isDown;
+  }
 
-    public can_move_left(focused_word_across: number, row: number, col: number, board: string[][]): boolean {
-        return focused_word_across !== 0 && col > 0 && board[row][col - 1] !== ' ' && !this.words[this.n_to_idx[1][focused_word_across]].is_down;
-    }
+  public canMoveRight(focusedWordAcross: number, row: number, col: number, board: string[][]): boolean {
+    return focusedWordAcross !== 0 && col < this.cols - 1 && board[row][col + 1] !== ' ' && !this.words[this.nToIdx[1][focusedWordAcross]].isDown;
+  }
 
-    public can_move_down(focused_word_down: number, row: number, col: number, board: string[][]): boolean {
-        return focused_word_down !== 0 && row < this.rows - 1 && board[row + 1][col] !== ' ' && this.words[this.n_to_idx[0][focused_word_down]].is_down;
-    }
+  public descOnFocus(isDown: boolean, focusedWord: number[], descIdx: number): boolean {
+    return this.descToN[isDown ? 0 : 1][descIdx] === focusedWord[isDown ? 0 : 1];
+  }
 
-    public can_move_right(focused_word_across: number, row: number, col: number, board: string[][]): boolean {
-        return focused_word_across !== 0 && col < this.cols - 1 && board[row][col + 1] !== ' ' && !this.words[this.n_to_idx[1][focused_word_across]].is_down;
-    }
+  public indexOnFocus(focusedCellDown: number, focusedCellAcross: number, row: number, col: number): boolean {
+    return this.wordsStartN[row][col] === 0 || (focusedCellDown === row && focusedCellAcross === col);
+  }
 
-    public desc_on_focus(is_down: boolean, focused_word: number[], desc_idx: number): boolean {
-        return this.desc_to_n[is_down ? 0 : 1][desc_idx] === focused_word[is_down ? 0 : 1];
-    }
-
-    public index_on_focus(focused_cell_down: number, focused_cell_across: number, row: number, col: number): boolean {
-        return this.words_start_n[row][col] === 0 || (focused_cell_down === row && focused_cell_across === col);
-    }
-
-    public cell_in_word(focused_word_down: number, focused_word_across: number, row: number, col: number): boolean {
-        return (focused_word_down !== 0 && this.words_n[row][col][0] === focused_word_down) || (focused_word_across !== 0 && this.words_n[row][col][1] === focused_word_across);
-    }
+  public cellInWord(focusedWordDown: number, focusedWordAcross: number, row: number, col: number): boolean {
+    return (focusedWordDown !== 0 && this.wordsN[row][col][0] === focusedWordDown) || (focusedWordAcross !== 0 && this.wordsN[row][col][1] === focusedWordAcross);
+  }
 }
