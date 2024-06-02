@@ -1,12 +1,14 @@
 import styled from 'styled-components';
-import { surfaceLiquid02, surfaceLiquid03 } from '@salutejs/plasma-tokens';
+import { surfaceLiquid02 } from '@salutejs/plasma-tokens';
 
 export const AppContainer = styled.div`
 
 `;
 
 export const ButtonContainer = styled.div`
-    
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
 `;
 
 export const LevelContainer = styled.div`
@@ -52,18 +54,90 @@ export const BoardContainer = styled.div`
     @media (orientation: portrait) {
         flex: none;
         width: 100vw;
-        margin: 2vw;
+        margin: 1vw;
     }
 `;
 
-export const Button = styled.button`
+export const Title = styled.div`
+    display: flex;
+    justify-content: center;
+    margin: 8vh;
     
+    font-size: 5rem;
+`;
+
+export const Subtitle = styled.div`
+    display: flex;
+    justify-content: center;
+    margin: 1.25rem;
+    
+    font-size: 1.75rem;
+`;
+
+export const ButtonIndex = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 33%;
+    padding: 0.5rem;
+    
+    border-bottom: 0.15rem solid;
+    
+    font-size: 1.75rem;
+    text-align: center;
+`;
+
+export const ButtonDesc = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 66%;
+    
+    font-size: 1.25rem;
+    text-align: center;
+    line-height: 1.5;
+`;
+
+export const Button = styled.button`
+    all: unset;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 20rem;
+    height: 10rem;
+    margin: 1.25rem;
+    
+    border: 0.15rem solid;
+    
+    background-color: ${surfaceLiquid02};
+    
+    &:hover {
+        outline: 0.3rem solid;
+    }
+    
+    &:focus {
+        outline: 0.3rem solid;
+    }
+`;
+
+export const DescHeader = styled.div`
+    padding: 0 0.5rem;
+    
+    font-size: 1.25rem;
+    font-style: italic;
+    line-height: 2;
 `;
 
 export const Desc = styled.div<{ is_focused: boolean }>`
     padding: 0 0.5rem;
     
-    background-color: ${({ is_focused }) => (is_focused ? `${surfaceLiquid03}` : 'none')};
+    outline: ${({ is_focused }) => (is_focused ? '0.05rem dashed' : 'none')};
+    
+    background-color: ${({ is_focused }) => (is_focused ? `${surfaceLiquid02}` : 'none')};
 `;
 
 export const Board = styled.table`

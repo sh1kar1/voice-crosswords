@@ -1,11 +1,11 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Container, DescContainer, BoardContainer, Desc, Board, Cell, Index, Input } from './Components';
+import React, { useState, useEffect, useRef } from 'react';
+import { AppContainer, ButtonContainer, LevelContainer, DescContainer, BoardContainer, Title, Subtitle, ButtonIndex, ButtonDesc, Button, DescHeader, Desc, Board, Cell, Index, Input } from './Components';
 import Crossword from './Crossword';
-import * as levels from './levels';
-const level = [levels.l0, levels.l1];
+import * as l from './Levels';
+const levels = [l.l1, l.l2, l.l3, l.l4, l.l5, l.l6, l.l7, l.l8, l.l9, l.l10];
 
-const App: React.FC = () => {
-    const [crossword, set_crossword] = useState<Crossword>(new Crossword(level[1]));
+const Level: React.FC<{ level: number, set_level: any }> = ({ level, set_level }) => {
+    const [crossword] = useState<Crossword>(new Crossword(levels[level]));
     const [board, set_board] = useState<string[][]>(crossword.board.map(row => [...row]));
     const [mistakes, set_mistakes] = useState<boolean[][]>(Array.from({ length: crossword.rows }, () => Array(crossword.cols).fill(false)));
     const [focused_word, set_focused_word] = useState<number[]>([0, 0]);
@@ -32,12 +32,10 @@ const App: React.FC = () => {
                 }
                 set_mistakes(new_mistakes);
                 set_solved(solve);
-
-            } else if ((/^[0-9]+$/).test(e.key)) {
-                // TODO -------------------------------------
+            } else if (e.key === 'Escape') {
+                set_level(0);
             }
         };
-
         window.addEventListener('keydown', handle_key_down);
         return () => window.removeEventListener('keydown', handle_key_down);
     }, [board]);
@@ -113,10 +111,10 @@ const App: React.FC = () => {
     };
 
     return (
-        <Container>
+        <LevelContainer>
             <DescContainer>
                 <div>
-                    <Desc is_focused={false}><strong>По вертикали:</strong></Desc>
+                    <DescHeader>По вертикали:</DescHeader>
                     {crossword.down_desc.map((desc, idx) => (
                         <Desc key={idx} is_focused={crossword.desc_to_n[0][idx] === focused_word[0]}>{desc}</Desc>
                     ))}
@@ -143,6 +141,7 @@ const App: React.FC = () => {
                                         onFocus={() => { set_focused_word(crossword.words_n[row_idx][col_idx]); set_focused_cell([row_idx, col_idx]); }}
                                         onBlur={() => { set_focused_word([0, 0]); set_focused_cell([-1, -1]); }}
                                         onKeyDown={(e) => { e.preventDefault(); handle_input_key_down(row_idx, col_idx, e.key); }}
+                                        readOnly
                                     />
                                 </Cell>
                             ))}
@@ -153,13 +152,38 @@ const App: React.FC = () => {
             </BoardContainer>
             <DescContainer>
                 <div>
-                    <Desc is_focused={false}><strong>По горизонтали:</strong></Desc>
+                    <DescHeader>По горизонтали:</DescHeader>
                     {crossword.across_desc.map((desc, idx) => (
                         <Desc key={idx} is_focused={crossword.desc_to_n[1][idx] === focused_word[1]}>{desc}</Desc>
                     ))}
                 </div>
             </DescContainer>
-        </Container>
+        </LevelContainer>
+    );
+};
+
+const App: React.FC = () => {
+    const [level, set_level] = useState<number>(0);
+
+    return (
+        <AppContainer>
+            {level === 0 ? (
+                <div>
+                    <Title>Кроссворды</Title>
+                    <Subtitle>Выберите уровень:</Subtitle>
+                    <ButtonContainer>
+                        {levels.map((lvl, idx) => (
+                            <Button onClick={() => set_level(idx + 1)}>
+                                <ButtonIndex>{idx + 1}</ButtonIndex>
+                                <ButtonDesc>«{new Crossword(lvl).words[0].desc}»</ButtonDesc>
+                            </Button>
+                        ))}
+                    </ButtonContainer>
+                </div>
+            ) : (
+                <Level key={level} level={level - 1} set_level={set_level} />
+            )}
+        </AppContainer>
     );
 };
 
