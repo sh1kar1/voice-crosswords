@@ -6,6 +6,8 @@ const GlobalStyle = createGlobalStyle`
         background-color: ${background};
         background-image: ${gradient};
         background-attachment: fixed;
+        background-size: cover;
+        background-repeat: no-repeat;
     }
     
     * {
