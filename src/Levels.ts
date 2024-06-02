@@ -1,4 +1,4 @@
-export const l0 = [
+export const l1 = [
     {   "n": 1,
         "text": "watch",
         "desc": "You wear a _ to know the time",
@@ -80,7 +80,7 @@ export const l0 = [
     }
 ]
 
-export const l1 = [
+export const l2 = [
     {
         "n": 1,
         "text": "слепыш",
