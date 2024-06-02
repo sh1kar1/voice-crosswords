@@ -1,86 +1,4 @@
 export const l1 = [
-    {   "n": 1,
-        "text": "watch",
-        "desc": "You wear a _ to know the time",
-        "col": 1,
-        "row": 0,
-        "is_down": false
-    },
-    {
-        "n": 2,
-        "text": "hands",
-        "desc": "A clock has two _",
-        "col": 5,
-        "row": 0,
-        "is_down": true
-    },
-    {
-        "n": 3,
-        "text": "years",
-        "desc": "A century has one hundred _",
-        "col": 11,
-        "row": 2,
-        "is_down": true
-    },
-    {
-        "n": 4,
-        "text": "days",
-        "desc": "There are seven _ in a week",
-        "col": 5,
-        "row": 3,
-        "is_down": false
-    },
-    {
-        "n": 5,
-        "text": "seconds",
-        "desc": "A minute has sixty _",
-        "col": 8,
-        "row": 3,
-        "is_down": true
-    },
-    {
-        "n": 6,
-        "text": "months",
-        "desc": "A year has twelve _",
-        "col": 0,
-        "row": 4,
-        "is_down": false
-    },
-    {
-        "n": 7,
-        "text": "time",
-        "desc": "A clock helps to know the _",
-        "col": 3,
-        "row": 4,
-        "is_down": true
-    },
-    {
-        "n": 8,
-        "text": "calendar",
-        "desc": "It helps you to know the days of the week",
-        "col": 5,
-        "row": 6,
-        "is_down": true
-    },
-    {
-        "n": 9,
-        "text": "hours",
-        "desc": "A day has twenty four _",
-        "col": 7,
-        "row": 6,
-        "is_down": false
-    },
-    {
-        "n": 10,
-        "text": "weeks",
-        "desc": "A year has fifty two _",
-        "col": 4,
-        "row": 9,
-        "is_down": false
-    }
-]
-
-export const l2 = [
     {
         "n": 1,
         "text": "слепыш",
@@ -401,6 +319,16 @@ export const l2 = [
         "row": 14,
         "is_down": false
     }
+]
+
+export const l2 = [
+    {   "n": 1,
+        "text": "-",
+        "desc": "-",
+        "col": 0,
+        "row": 0,
+        "is_down": true
+    },
 ]
 
 export const l3 = [
