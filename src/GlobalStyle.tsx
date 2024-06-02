@@ -1,7 +1,13 @@
 import { createGlobalStyle } from 'styled-components';
-import { text } from '@salutejs/plasma-tokens';
+import { text, background, gradient } from '@salutejs/plasma-tokens';
 
 const GlobalStyle = createGlobalStyle`
+    :root {
+        background-color: ${background};
+        background-image: ${gradient};
+        background-attachment: fixed;
+    }
+    
     * {
         margin: 0;
         padding: 0;

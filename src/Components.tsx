@@ -1,13 +1,8 @@
 import styled from 'styled-components';
-import { background, gradient, surfaceLiquid02, surfaceLiquid03 } from '@salutejs/plasma-tokens';
+import { surfaceLiquid02, surfaceLiquid03 } from '@salutejs/plasma-tokens';
 
 export const AppContainer = styled.div`
-    background-color: ${background};
-    background-image: ${gradient};
-        
-    @media (orientation: portrait) {
-        background-image: none;
-    }
+
 `;
 
 export const ButtonContainer = styled.div`
