@@ -1,7 +1,17 @@
 import styled from 'styled-components';
+import { text, background, gradient, surfaceLiquid02, surfaceLiquid03 } from '@salutejs/plasma-tokens';
 
 export const AppContainer = styled.div`
-    background-color: whitesmoke;
+    background-color: ${background};
+    background-image: ${gradient};
+        
+    @media (orientation: portrait) {
+        background-image: none;
+    }
+`;
+
+export const ButtonContainer = styled.div`
+    
 `;
 
 export const LevelContainer = styled.div`
@@ -51,10 +61,14 @@ export const BoardContainer = styled.div`
     }
 `;
 
-export const Desc = styled.div<{ is_focused: boolean }>`
-    padding: 0 0.25rem;
+export const Button = styled.button`
     
-    border: ${({ is_focused }) => (is_focused ? '0.1rem dashed black' : 'none')};
+`;
+
+export const Desc = styled.div<{ is_focused: boolean }>`
+    padding: 0 0.5rem;
+    
+    background-color: ${({ is_focused }) => (is_focused ? `${surfaceLiquid03}` : 'none')};
 `;
 
 export const Board = styled.table`
@@ -66,7 +80,7 @@ export const Cell = styled.td`
     
     padding: 0;
     
-    border: ${({ content }) => (content !== ' ' ? '0.05rem solid black' : 'none')};
+    border: ${({ content }) => (content !== ' ' ? `0.05rem solid ${text}` : 'none')};
 `;
 
 export const Index = styled.div`
@@ -87,9 +101,9 @@ export const Input = styled.input<{ is_word: boolean, is_mistake: boolean, is_so
     
     border: hidden;
     
-    background-color: ${({ is_word }) => (is_word ? 'aliceblue' : 'white')};
+    background-color: ${({ is_word }) => (is_word ? 'rgba(255, 255, 255, 0.25)' : surfaceLiquid02)};
     
-    color: ${({ is_mistake, is_solved }) => (is_mistake ? 'crimson' : (is_solved ? 'seagreen' : 'black'))};
+    color: ${({ is_mistake, is_solved }) => (is_mistake ? 'tomato' : (is_solved ? 'lightgreen' : text))};
     font-size: 1.75rem;
     text-align: center;
     
@@ -97,7 +111,7 @@ export const Input = styled.input<{ is_word: boolean, is_mistake: boolean, is_so
     caret-color: transparent;
 
     &:focus {
-        border: 0.15rem solid black;
+        border: 0.15rem solid ${text};
         outline: none;
     }
 

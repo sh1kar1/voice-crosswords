@@ -1,11 +1,14 @@
 import { createGlobalStyle } from 'styled-components';
+import { text } from '@salutejs/plasma-tokens';
 
 const GlobalStyle = createGlobalStyle`
     * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+        
         font-family: Roboto, sans-serif;
+        color: ${text};
     }
 
     body {
@@ -22,25 +25,25 @@ const GlobalStyle = createGlobalStyle`
         display: block;
     }
     
-    @media (max-width: 599px) {
+    @media (max-width: 559px) {
         :root {
             font-size: 8px;
         }
     }
     
-    @media (min-width: 600px) and (max-width: 1023px) {
+    @media (min-width: 560px) and (max-width: 1119px) {
         :root {
             font-size: 12px;
         }
     }
     
-    @media (min-width: 1024px) and (max-width: 1199px) {
+    @media (min-width: 1120px) and (max-width: 1919px) {
         :root {
             font-size: 16px;
         }
     }
     
-    @media (min-width: 1200px) {
+    @media (min-width: 1920px) {
         :root {
             font-size: 20px;
         }
