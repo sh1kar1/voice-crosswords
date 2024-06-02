@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { text, background, gradient, surfaceLiquid02, surfaceLiquid03 } from '@salutejs/plasma-tokens';
+import { background, gradient, surfaceLiquid02, surfaceLiquid03 } from '@salutejs/plasma-tokens';
 
 export const AppContainer = styled.div`
     background-color: ${background};
@@ -80,7 +80,7 @@ export const Cell = styled.td`
     
     padding: 0;
     
-    border: ${({ content }) => (content !== ' ' ? `0.05rem solid ${text}` : 'none')};
+    border: ${({ content }) => (content !== ' ' ? `0.05rem solid` : 'none')};
 `;
 
 export const Index = styled.div`
@@ -103,7 +103,7 @@ export const Input = styled.input<{ is_word: boolean, is_mistake: boolean, is_so
     
     background-color: ${({ is_word }) => (is_word ? 'rgba(255, 255, 255, 0.25)' : surfaceLiquid02)};
     
-    color: ${({ is_mistake, is_solved }) => (is_mistake ? 'tomato' : (is_solved ? 'lightgreen' : text))};
+    color: ${({ is_mistake, is_solved }) => (is_mistake ? 'tomato' : (is_solved ? 'lightgreen' : ''))};
     font-size: 1.75rem;
     text-align: center;
     
@@ -111,7 +111,7 @@ export const Input = styled.input<{ is_word: boolean, is_mistake: boolean, is_so
     caret-color: transparent;
 
     &:focus {
-        border: 0.15rem solid ${text};
+        border: 0.15rem solid;
         outline: none;
     }
 
