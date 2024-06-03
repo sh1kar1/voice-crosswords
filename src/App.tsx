@@ -1,25 +1,32 @@
+// App.tsx
+// the main file in the project
+// all rendering logic is here
+
 import React, { useState, useEffect, useRef } from 'react';
 import { ButtonContainer, LevelContainer, DescContainer, BoardContainer, Title, Subtitle, ButtonIndex, ButtonDesc, Button, DescHeader, Desc, Board, Cell, Index, Input } from './Components';
 import Crossword from './Crossword';
 import * as l from './Levels';
 
-const levels = [l.l1, l.l2, l.l3, l.l4, l.l5, l.l6, l.l7, l.l8, l.l9, l.l10];
+const levels = [l.l1, l.l2, l.l3, l.l4, l.l5, l.l6, l.l7, l.l8, l.l9, l.l10];  // TODO: CHANGE THIS ARRAY AFTER ADDING A NEW LEVEL
 
+// page with board and description
 const Level: React.FC<{ level: number, setLevel: any }> = ({ level, setLevel }) => {
-  const [crossword] = useState<Crossword>(new Crossword(levels[level]));
-  const [board, setBoard] = useState<string[][]>(crossword.board.map(row => [...row]));
-  const [mistakes, setMistakes] = useState<boolean[][]>(Array.from({ length: crossword.rows }, () => Array(crossword.cols).fill(false)));
-  const [focusedWord, setFocusedWord] = useState<number[]>([0, 0]);
-  const [focusedCell, setFocusedCell] = useState<number[]>([-1, -1]);
-  const [prevMoveVertical, setPrevMoveVertical] = useState<boolean>(true);
-  const [solved, setSolved] = useState<boolean>(false);
+  const [crossword] = useState<Crossword>(new Crossword(levels[level]));                                                                   // crossword instance matching current level
+  const [board, setBoard] = useState<string[][]>(crossword.emptyBoard.map(row => [...row]));                                               // actual board (after user inputs)
+  const [mistakes, setMistakes] = useState<boolean[][]>(Array.from({ length: crossword.rows }, () => Array(crossword.cols).fill(false)));  // cells with wrong letters
+  const [focusedWord, setFocusedWord] = useState<number[]>([0, 0]);                                                                        // number of the focused word (vertical and horizontal)
+  const [focusedCell, setFocusedCell] = useState<number[]>([-1, -1]);                                                                      // row and column of the focused cell
+  const [prevMoveVertical, setPrevMoveVertical] = useState<boolean>(true);                                                                 // true if the previous move by arrows was vertical
+  const [solved, setSolved] = useState<boolean>(false);                                                                                    // true if the crossword was solved
 
-  const inputRefs = useRef<(HTMLInputElement | null)[][]>([]);
+  const inputRefs = useRef<(HTMLInputElement | null)[][]>([]);                                                                             // refs for moving focus
   inputRefs.current = Array.from({ length: crossword.rows }, () => Array(crossword.cols).fill(null));
 
   useEffect(() => {
+    // callback for hotkeys
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Enter') {
+        // looking for mistakes or solve
         (document.activeElement as HTMLElement)?.blur();
         const newMistakes = Array.from({ length: crossword.rows }, () => Array(crossword.cols).fill(false));
         let solve = true;
@@ -35,6 +42,7 @@ const Level: React.FC<{ level: number, setLevel: any }> = ({ level, setLevel }) 
         setSolved(solve);
 
       } else if (e.key === 'Escape') {
+        // back to levels menu
         setLevel(0);
       }
     };
@@ -43,6 +51,7 @@ const Level: React.FC<{ level: number, setLevel: any }> = ({ level, setLevel }) 
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [board]);
 
+  // callback for user's input in cells
   const handleInputKeyDown = (row: number, col: number, key: string) => {
     const changeBoard = (val: string) => {
       const newBoard = board.map(row => [...row]);
@@ -128,7 +137,7 @@ const Level: React.FC<{ level: number, setLevel: any }> = ({ level, setLevel }) 
             <tr key={rowIdx}>
               {row.map((cell, colIdx) => (
                 <Cell key={colIdx} content={cell}>
-                  <Index hidden={crossword.indexOnFocus(focusedCell[0], focusedCell[1], rowIdx, colIdx)}>{crossword.wordsStartN[rowIdx][colIdx]}</Index>
+                  <Index hidden={crossword.indexOnFocus(focusedCell[0], focusedCell[1], rowIdx, colIdx)}>{crossword.cellToWordsStartN[rowIdx][colIdx]}</Index>
                   <Input
                     hidden={cell === ' '}
                     disabled={solved}
@@ -139,7 +148,7 @@ const Level: React.FC<{ level: number, setLevel: any }> = ({ level, setLevel }) 
                     inWord={crossword.cellInWord(focusedWord[0], focusedWord[1], rowIdx, colIdx)}
                     isMistake={mistakes[rowIdx][colIdx]}
                     isSolved={solved}
-                    onFocus={() => { setFocusedWord(crossword.wordsN[rowIdx][colIdx]); setFocusedCell([rowIdx, colIdx]); }}
+                    onFocus={() => { setFocusedWord(crossword.cellToWordsN[rowIdx][colIdx]); setFocusedCell([rowIdx, colIdx]); }}
                     onBlur={() => { setFocusedWord([0, 0]); setFocusedCell([-1, -1]); }}
                     onKeyDown={(e) => { e.preventDefault(); handleInputKeyDown(rowIdx, colIdx, e.key); }}
                     readOnly
@@ -163,8 +172,9 @@ const Level: React.FC<{ level: number, setLevel: any }> = ({ level, setLevel }) 
   );
 };
 
+// page with levels menu
 const App: React.FC = () => {
-  const [level, setLevel] = useState<number>(0);
+  const [level, setLevel] = useState<number>(0);  // current level (0 if user in menu)
 
   return (
     <>

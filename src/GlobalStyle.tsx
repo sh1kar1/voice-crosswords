@@ -1,3 +1,6 @@
+// GlobalStyle.tsx
+// does what it says :)
+
 import { createGlobalStyle } from 'styled-components';
 import { text, background, gradient } from '@salutejs/plasma-tokens';
 

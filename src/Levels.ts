@@ -1,3 +1,10 @@
+// Levels.ts
+// contains levels (crosswords) as arrays of words (for details check interface 'Word' in the 'Crossword.ts')
+// the lines before the arrays contain links to crosswords sources
+// to add a new level you just need to create an array here and add it to 'levels' in the 'App.tsx'
+// for best results the sizes (rows x cols) of the crosswords should be from 10x10 to 20x20 (but not necessary square)
+
+// https://www.scanword.info/online_cross/1325
 export const l1 = [
   {
     "n": 1,
@@ -321,6 +328,7 @@ export const l1 = [
   }
 ]
 
+// TODO
 export const l2 = [
   {
     "n": 1,
@@ -332,6 +340,7 @@ export const l2 = [
   },
 ]
 
+// TODO
 export const l3 = [
   {
     "n": 1,
@@ -343,6 +352,7 @@ export const l3 = [
   },
 ]
 
+// TODO
 export const l4 = [
   {
     "n": 1,
@@ -354,6 +364,7 @@ export const l4 = [
   },
 ]
 
+// TODO
 export const l5 = [
   {
     "n": 1,
@@ -365,6 +376,7 @@ export const l5 = [
   },
 ]
 
+// TODO
 export const l6 = [
   {
     "n": 1,
@@ -376,6 +388,7 @@ export const l6 = [
   },
 ]
 
+// TODO
 export const l7 = [
   {
     "n": 1,
@@ -387,6 +400,7 @@ export const l7 = [
   },
 ]
 
+// TODO
 export const l8 = [
   {
     "n": 1,
@@ -398,6 +412,7 @@ export const l8 = [
   },
 ]
 
+// TODO
 export const l9 = [
   {
     "n": 1,
@@ -409,6 +424,7 @@ export const l9 = [
   },
 ]
 
+// TODO
 export const l10 = [
   {
     "n": 1,

@@ -1,3 +1,6 @@
+// Components.tsx
+// contains css-styles of components that are used in the 'App.tsx'
+
 import styled from 'styled-components';
 import { surfaceLiquid02 } from '@salutejs/plasma-tokens';
 
