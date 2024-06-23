@@ -14,7 +14,7 @@ export const LevelContainer = styled.div`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  height: 100vh;
+  height: 85vh;
 
   @media (orientation: portrait) {
     flex-direction: column;
