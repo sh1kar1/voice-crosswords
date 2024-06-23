@@ -236,8 +236,8 @@ const App: React.FC = () => {
             break;
           case "enter_word":
             console.log(action.n, action.isDown, action.answer);
-            //play_correct_answer();
-            play_level_select(1);
+            play_correct_answer();
+            //play_level_select(1);
             break;
           default:
             throw new Error;
@@ -259,6 +259,14 @@ const App: React.FC = () => {
 
     const play_level_select = (lvl: number) => {
       _send_action_value('manual_level_select', lvl);
+    }
+
+    const play_no_such_level = () => {
+      _send_action_value('no_such_level');
+    }
+
+    const play_no_such_word = () => {
+      _send_action_value('no_such_word');
     }
 
     const _send_action_value = (action_id: string, value: number = 0) => {
