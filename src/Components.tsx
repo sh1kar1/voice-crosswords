@@ -3,8 +3,9 @@
 
 import styled from 'styled-components';
 import { surfaceLiquid02 } from '@salutejs/plasma-tokens';
+import { Button } from '@salutejs/plasma-ui';
 
-export const ButtonContainer = styled.div`
+export const LvlButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -73,7 +74,7 @@ export const Subtitle = styled.div`
   font-size: 1.75rem;
 `;
 
-export const ButtonIndex = styled.div`
+export const LvlButtonIndex = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -87,7 +88,7 @@ export const ButtonIndex = styled.div`
   text-align: center;
 `;
 
-export const ButtonDesc = styled.div`
+export const LvlButtonDesc = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -99,7 +100,7 @@ export const ButtonDesc = styled.div`
   line-height: 1.5;
 `;
 
-export const Button = styled.button`
+export const LvlButton = styled.button`
   all: unset;
 
   display: flex;
@@ -121,6 +122,10 @@ export const Button = styled.button`
   &:focus {
     outline: 0.3rem solid;
   }
+`;
+
+export const Back = styled(Button)`
+  position: absolute;
 `;
 
 export const DescHeader = styled.div`
