@@ -3,9 +3,21 @@
 // all rendering logic is here
 
 import React, { useState, useEffect, useRef } from 'react';
+import { createAssistant, createSmartappDebugger } from '@salutejs/client';
 import { ButtonContainer, LevelContainer, DescContainer, BoardContainer, Title, Subtitle, ButtonIndex, ButtonDesc, Button, DescHeader, Desc, Board, Cell, Index, Input } from './Components';
 import Crossword from './Crossword';
 import * as l from './Levels';
+
+const initializeAssistant = (getState: any) => {
+  if (process.env.NODE_ENV === "development") {
+    return createSmartappDebugger({
+      token: process.env.REACT_APP_TOKEN ?? "",
+      initPhrase: `Запусти ${process.env.REACT_APP_SMARTAPP}`,
+      getState,
+    });
+  }
+  return createAssistant({getState});
+};
 
 const levels = [l.l1, l.l2, l.l3, l.l4, l.l5, l.l6, l.l7, l.l8, l.l9, l.l10];  // TODO: CHANGE THIS ARRAY AFTER ADDING A NEW LEVEL
 
@@ -175,6 +187,96 @@ const Level: React.FC<{ level: number, setLevel: any }> = ({ level, setLevel }) 
 // page with levels menu
 const App: React.FC = () => {
   const [level, setLevel] = useState<number>(0);  // current level (0 if user in menu)
+
+  type Action =
+      | {
+          type: "select_level";
+          level: number;
+        }
+      | {
+          type: "enter_word";
+          n: number;
+          isDown: number;
+          answer: string
+        };
+
+  type Event = {
+    type: "smart_app_data";
+    action: Action;
+    sdk_meta: any;
+  }
+
+
+  useEffect(() => {
+    const assistant = initializeAssistant(() => {});
+
+    assistant.on('data', (event: any) => {
+      console.log(`assistant.on(data)`, event);
+      if (event.type === "character") {
+        console.log(`assistant.on(data): character: "${event?.character?.id}"`);
+      } else if (event.type === "insets") {
+        console.log(`assistant.on(data): insets`);
+      } else if (event.type === "feature_launcher") {
+        console.log(`assistant.on(data): feature_launcher`);
+      } else {
+        const event_nsd: Event = event;
+        if (event_nsd.action) {
+          dispatchAssistantAction(event_nsd.action);
+        }
+      }
+    });
+
+
+    const dispatchAssistantAction = (action: Action) => {
+      console.log('dispatchAssistantAction', action);
+      if (action) {
+        switch (action.type) {
+          case "select_level":
+            setLevel(action.level);
+            break;
+          case "enter_word":
+            console.log(action.n, action.isDown, action.answer);
+            //play_correct_answer();
+            play_level_select(1);
+            break;
+          default:
+            throw new Error;
+        }
+      }
+    }
+
+    const play_correct_answer = () => {
+      _send_action_value('correct_answer');
+    }
+
+    const play_wrong_answer = () => {
+      _send_action_value('wrong_answer');
+    }
+
+    const play_back_to_menu = () => {
+      _send_action_value('back_to_menu');
+    }
+
+    const play_level_select = (lvl: number) => {
+      _send_action_value('manual_level_select', lvl);
+    }
+
+    const _send_action_value = (action_id: string, value: number = 0) => {
+      const data = {
+        action: {
+          action_id: action_id,
+          parameters: {
+            // значение поля parameters может быть любым, но должно соответствовать серверной логике
+            value: value, // см.файл src/sc/noteDone.sc смартаппа в Studio Code
+          },
+        },
+      };
+      const unsubscribe = assistant.sendData(data, (data) => {
+        console.log('sendData onData:', data);
+        unsubscribe();
+      });
+    }
+  }, [])
 
   return (
     <>
