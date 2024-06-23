@@ -2,7 +2,7 @@
 // contains css-styles of components that are used in the 'App.tsx'
 
 import styled from 'styled-components';
-import { surfaceLiquid02 } from '@salutejs/plasma-tokens';
+import { text, surfaceLiquid02 } from '@salutejs/plasma-tokens';
 import { Button } from '@salutejs/plasma-ui';
 
 export const LvlButtonContainer = styled.div`
@@ -184,7 +184,7 @@ export const Input = styled.input<{ inWord: boolean, isMistake: boolean, isSolve
   caret-color: transparent;
 
   &:focus {
-    border: 0.15rem solid;
+    border: 0.15rem solid ${text};
     outline: none;
   }
 
