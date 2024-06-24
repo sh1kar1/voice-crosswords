@@ -51,18 +51,9 @@ const Level = React.forwardRef<LevelRef, LevelProps>(({ level, setLevel }, ref) 
       if (e.key === 'Enter') {
         // looking for mistakes or solve
         (document.activeElement as HTMLElement)?.blur();
-        const newMistakes = Array.from({ length: crossword.rows }, () => Array(crossword.cols).fill(false));
-        let solve = true;
-        for (let row = 0; row < crossword.rows; row++) {
-          for (let col = 0; col < crossword.cols; col++) {
-            if (board[row][col] !== crossword.board[row][col]) {
-              newMistakes[row][col] = true;
-              solve = false;
-            }
-          }
-        }
+        const newMistakes = crossword.getMistakes(board);
         setMistakes(newMistakes);
-        setSolved(solve);
+        setSolved(!newMistakes.some(row => row.some(val => val)));
 
       } else if (e.key === 'Escape') {
         // back to levels menu
@@ -76,23 +67,12 @@ const Level = React.forwardRef<LevelRef, LevelProps>(({ level, setLevel }, ref) 
 
   useImperativeHandle(ref, () => ({
     setWord: (text: string, n: number, isDown: boolean) => {
-      let cur_word;
-      for (let word of crossword.words) {
-        if (word.n == n && word.isDown == isDown) {
-          cur_word = word;
-          break;
-        }
-      }
-      if (cur_word !== undefined && cur_word.text.length === text.length) {
-        const newBoard = board.map(row => [...row]);
-        for (let i = 0; i < text.length; i++) {
-          newBoard[cur_word.row + (cur_word.isDown ? i : 0)][cur_word.col + (!cur_word.isDown ? i : 0)] = text[i];
-        }
-        setBoard(newBoard);
-        return true;
-      } else {
+      let word = crossword.getWord(n, isDown);
+      if (word === null || word.text.length !== text.length) {
         return false;
       }
+      setBoard(crossword.setWord(board, word, text));
+      return true;
     }
   }));
 
@@ -271,7 +251,7 @@ const App: React.FC = () => {
       if (action) {
         switch (action.type) {
           case 'select_level':
-            console.log("выбран уровень", action.level);
+            console.log('выбран уровень', action.level);
             if (action.level <= levels.length) {
               setLevel(action.level);
               play_level_select(action.level);

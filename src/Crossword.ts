@@ -135,4 +135,36 @@ export default class Crossword {
   public cellInWord(focusedWordDown: number, focusedWordAcross: number, row: number, col: number): boolean {
     return (focusedWordDown !== 0 && this.cellToWordsN[row][col][0] === focusedWordDown) || (focusedWordAcross !== 0 && this.cellToWordsN[row][col][1] === focusedWordAcross);
   }
+
+  //
+  public getMistakes(board: string[][]): boolean[][] {
+    const newMistakes = Array.from({ length: this.rows }, () => Array(this.cols).fill(false));
+    for (let row = 0; row < this.rows; row++) {
+      for (let col = 0; col < this.cols; col++) {
+        if (board[row][col] !== this.board[row][col]) {
+          newMistakes[row][col] = true;
+        }
+      }
+    }
+    return newMistakes;
+  }
+
+  //
+  public getWord(n: number, isDown: boolean): Word | null {
+    for (let word of this.words) {
+      if (word.n == n && word.isDown == isDown) {
+        return word;
+      }
+    }
+    return null;
+  }
+
+  //
+  public setWord(board: string[][], word: Word, text: string): string[][] {
+    const newBoard = board.map(row => [...row]);
+    for (let i = 0; i < text.length; i++) {
+      newBoard[word.row + (word.isDown ? i : 0)][word.col + (!word.isDown ? i : 0)] = text[i];
+    }
+    return newBoard;
+  }
 }
