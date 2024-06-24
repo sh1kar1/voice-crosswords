@@ -37,7 +37,7 @@ interface LevelProps {
 // page with board and description
 const Level = React.forwardRef<LevelRef, LevelProps>(({ level, setLevel }, ref) => {
   const [crossword] = useState<Crossword>(new Crossword(levels[level]));                                                                   // crossword instance matching current level
-  const [board, setBoard] = useState<string[][]>(crossword.emptyBoard.map(row => [...row]));                                               // actual board (after user inputs)
+  const [board, setBoard] = useState<string[][]>(crossword.board.map(row => [...row]));                                                    // actual board (after user inputs)
   const [mistakes, setMistakes] = useState<boolean[][]>(Array.from({ length: crossword.rows }, () => Array(crossword.cols).fill(false)));  // cells with wrong letters
   const [focusedWord, setFocusedWord] = useState<number[]>([0, 0]);                                                                        // number of the focused word (vertical and horizontal)
   const [focusedCell, setFocusedCell] = useState<number[]>([-1, -1]);                                                                      // row and column of the focused cell
@@ -75,6 +75,11 @@ const Level = React.forwardRef<LevelRef, LevelProps>(({ level, setLevel }, ref) 
         return false;
       }
       setBoard(crossword.setWord(board, word, text));
+      const newMistakes = mistakes.map(row => [...row]);
+      for (let i = 0; i < text.length; i++) {
+        newMistakes[word.row + (word.isDown ? i : 0)][word.col + (!word.isDown ? i : 0)] = false;
+      }
+      setMistakes(newMistakes);
       return true;
     },
     deleteWord: (n: number, isDown: boolean) => {
