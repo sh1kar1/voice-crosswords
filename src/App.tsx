@@ -9,7 +9,7 @@ import { LvlButtonContainer, LevelContainer, DescContainer, BoardContainer, Titl
 import Crossword from './Crossword';
 import * as l from './Levels';
 
-const levels = [l.l1, l.l2, l.l3, l.l4, l.l5, l.l6, l.l7, l.l8, l.l9, l.l10];  // TODO: CHANGE THIS ARRAY AFTER ADDING A NEW LEVEL
+const levels = [l.l1, l.l2, l.l3, l.l4, l.l5];  // TODO: CHANGE THIS ARRAY AFTER ADDING A NEW LEVEL
 
 const initializeAssistant = (getState: any) => {
   if (process.env.NODE_ENV === 'development') {
