@@ -236,6 +236,9 @@ const App: React.FC = () => {
           n: number;
           isDown: number;
           answer: string
+        }
+      | {
+          type: 'check';
         };
 
   type Event = {
@@ -268,14 +271,25 @@ const App: React.FC = () => {
       if (action) {
         switch (action.type) {
           case 'select_level':
-            setLevel(action.level);
+            console.log("выбран уровень", action.level);
+            if (action.level <= levels.length) {
+              setLevel(action.level);
+              play_level_select(action.level);
+            }
+            else {
+              play_no_such_level();
+            }
             break;
           case 'enter_word':
             if (levelRef.current?.setWord(action.answer, action.n, action.isDown == 1)) {
               console.log('Слово ввелось');
             } else {
               console.log('Слово НЕ ввелось');
+              play_failed_to_enter_word(action.answer);
             }
+            break;
+          case 'check':
+            play_mistakes();
             break;
           default:
             throw new Error;
@@ -283,12 +297,16 @@ const App: React.FC = () => {
       }
     }
 
-    const play_correct_answer = () => {
-      _send_action_value('correct_answer');
+    const play_mistakes = () => {
+      _send_action_value('mistakes');
     }
 
-    const play_wrong_answer = () => {
-      _send_action_value('wrong_answer');
+    const play_all_correct_continue = () => {
+      _send_action_value('all_correct_continue');
+    }
+
+    const play_all_correct_finish = () => {
+      _send_action_value('all_correct_finish');
     }
 
     const play_back_to_menu = () => {
@@ -296,18 +314,18 @@ const App: React.FC = () => {
     }
 
     const play_level_select = (lvl: number) => {
-      _send_action_value('manual_level_select', lvl);
+      _send_action_value('level_select_success', lvl);
     }
 
     const play_no_such_level = () => {
       _send_action_value('no_such_level');
     }
 
-    const play_no_such_word = () => {
-      _send_action_value('no_such_word');
+    const play_failed_to_enter_word = (word: string) => {
+      _send_action_value('failed_to_enter_word', word);
     }
 
-    const _send_action_value = (action_id: string, value: number = 0) => {
+    const _send_action_value = (action_id: string, value: any = 0) => {
       const data = {
         action: {
           action_id: action_id,
