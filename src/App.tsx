@@ -70,7 +70,8 @@ const Level = React.forwardRef<LevelRef, LevelProps>(({ level, setLevel }, ref) 
   useImperativeHandle(ref, () => ({
     setWord: (text: string, n: number, isDown: boolean) => {
       let word = crossword.getWord(n, isDown);
-      if (word === null || word.text.length !== text.length) {
+      // @ts-ignore
+      if (word === null || word.text.length !== text.length || text.split('').some((chr, i) => chr !== board[word.row + (word.isDown ? i : 0)][word.col + (!word.isDown ? i : 0)] && board[word.row + (word.isDown ? i : 0)][word.col + (!word.isDown ? i : 0)] !== '')) {
         return false;
       }
       setBoard(crossword.setWord(board, word, text));

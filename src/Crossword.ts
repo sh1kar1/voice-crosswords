@@ -172,7 +172,21 @@ export default class Crossword {
   public deleteWord(board: string[][], word: Word): string[][] {
     const newBoard = board.map(row => [...row]);
     for (let i = 0; i < word.text.length; i++) {
-      newBoard[word.row + (word.isDown ? i : 0)][word.col + (!word.isDown ? i : 0)] = '';
+      const orthoN = this.cellToWordsN[word.row + (word.isDown ? i : 0)][word.col + (!word.isDown ? i : 0)][word.isDown ? 1 : 0];
+      if (orthoN !== 0) {
+        const orthoWord = this.words[this.nToIdx[word.isDown ? 1 : 0][orthoN]];
+        let filled = true;
+        for (let j = 0; j < orthoWord.text.length; j++) {
+          if (board[orthoWord.row + (orthoWord.isDown ? j : 0)][orthoWord.col + (!orthoWord.isDown ? j : 0)] === '') {
+            filled = false;
+          }
+        }
+        if (!filled) {
+          newBoard[word.row + (word.isDown ? i : 0)][word.col + (!word.isDown ? i : 0)] = '';
+        }
+      } else {
+        newBoard[word.row + (word.isDown ? i : 0)][word.col + (!word.isDown ? i : 0)] = '';
+      }
     }
     return newBoard;
   }
