@@ -302,11 +302,13 @@ const App: React.FC = () => {
               console.log('Слово удалилось');
             } else {
               console.log('Слово НЕ удалилось');
+              play_failed_to_delete();
             }
             break;
           case 'check':
             if (levelRef.current?.checkSolve()) {
               console.log('Ошибок НЕТ');
+              play_all_correct_continue();
             } else {
               console.log('Ошибки есть');
               play_mistakes();
@@ -328,6 +330,10 @@ const App: React.FC = () => {
 
     const play_all_correct_finish = () => {
       _send_action_value('all_correct_finish');
+    }
+
+    const play_failed_to_delete = () => {
+      _send_action_value('failed_to_delete');
     }
 
     const play_back_to_menu = () => {
