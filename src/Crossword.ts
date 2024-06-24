@@ -167,4 +167,13 @@ export default class Crossword {
     }
     return newBoard;
   }
+
+  //
+  public deleteWord(board: string[][], word: Word): string[][] {
+    const newBoard = board.map(row => [...row]);
+    for (let i = 0; i < word.text.length; i++) {
+      newBoard[word.row + (word.isDown ? i : 0)][word.col + (!word.isDown ? i : 0)] = '';
+    }
+    return newBoard;
+  }
 }

@@ -25,6 +25,8 @@ const initializeAssistant = (getState: any) => {
 
 interface LevelRef {
   setWord: (text: string, n: number, isDown: boolean) => boolean;
+  deleteWord: (n: number, isDown: boolean) => boolean;
+  checkSolve: () => boolean;
 }
 
 interface LevelProps {
@@ -73,6 +75,20 @@ const Level = React.forwardRef<LevelRef, LevelProps>(({ level, setLevel }, ref) 
       }
       setBoard(crossword.setWord(board, word, text));
       return true;
+    },
+    deleteWord: (n: number, isDown: boolean) => {
+      let word = crossword.getWord(n, isDown);
+      if (word === null) {
+        return false;
+      }
+      setBoard(crossword.deleteWord(board, word));
+      return true;
+    },
+    checkSolve: () => {
+      const newMistakes = crossword.getMistakes(board);
+      setMistakes(newMistakes);
+      setSolved(!newMistakes.some(row => row.some(val => val)));
+      return !newMistakes.some(row => row.some(val => val));
     }
   }));
 
@@ -207,19 +223,24 @@ const App: React.FC = () => {
   const levelRef = useRef<LevelRef>(null);
 
   type Action =
-      | {
-          type: 'select_level';
-          level: number;
-        }
-      | {
-          type: 'enter_word';
-          n: number;
-          isDown: number;
-          answer: string
-        }
-      | {
-          type: 'check';
-        };
+    | {
+        type: 'select_level';
+        level: number;
+      }
+    | {
+        type: 'enter_word';
+        n: number;
+        isDown: number;
+        answer: string
+      }
+    | {
+        type: 'delete_word';
+        n: number;
+        isDown: number;
+      }
+    | {
+        type: 'check';
+      };
 
   type Event = {
     type: 'smart_app_data';
@@ -268,8 +289,20 @@ const App: React.FC = () => {
               play_failed_to_enter_word(action.answer);
             }
             break;
+          case 'delete_word':
+            if (levelRef.current?.deleteWord(action.n, action.isDown == 1)) {
+              console.log('Слово удалилось');
+            } else {
+              console.log('Слово НЕ удалилось');
+            }
+            break;
           case 'check':
-            play_mistakes();
+            if (levelRef.current?.checkSolve()) {
+              console.log('Ошибок НЕТ');
+            } else {
+              console.log('Ошибки есть');
+              play_mistakes();
+            }
             break;
           default:
             throw new Error;
