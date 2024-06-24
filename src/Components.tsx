@@ -95,6 +95,7 @@ export const LvlButtonDesc = styled.div`
   align-items: center;
   width: 100%;
   height: 66%;
+  padding: 0 1rem;
 
   font-size: 1.25rem;
   text-align: center;
