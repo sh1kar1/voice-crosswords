@@ -137,19 +137,6 @@ export default class Crossword {
   }
 
   //
-  public getMistakes(board: string[][]): boolean[][] {
-    const newMistakes = Array.from({ length: this.rows }, () => Array(this.cols).fill(false));
-    for (let row = 0; row < this.rows; row++) {
-      for (let col = 0; col < this.cols; col++) {
-        if (board[row][col] !== this.board[row][col]) {
-          newMistakes[row][col] = true;
-        }
-      }
-    }
-    return newMistakes;
-  }
-
-  //
   public getWord(n: number, isDown: boolean): Word | null {
     for (let word of this.words) {
       if (word.n == n && word.isDown == isDown) {
@@ -189,5 +176,18 @@ export default class Crossword {
       }
     }
     return newBoard;
+  }
+
+  //
+  public getMistakes(board: string[][]): boolean[][] {
+    const newMistakes = Array.from({ length: this.rows }, () => Array(this.cols).fill(false));
+    for (let row = 0; row < this.rows; row++) {
+      for (let col = 0; col < this.cols; col++) {
+        if (board[row][col] !== this.board[row][col]) {
+          newMistakes[row][col] = true;
+        }
+      }
+    }
+    return newMistakes;
   }
 }

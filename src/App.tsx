@@ -83,6 +83,13 @@ const Level = React.forwardRef<LevelRef, LevelProps>(({ level, setLevel }, ref) 
         return false;
       }
       setBoard(crossword.deleteWord(board, word));
+      const newMistakes = mistakes.map(row => [...row]);
+      for (let i = 0; i < word.text.length; i++) {
+        if (board[word.row + (word.isDown ? i : 0)][word.col + (!word.isDown ? i : 0)] === '') {
+          newMistakes[word.row + (word.isDown ? i : 0)][word.col + (!word.isDown ? i : 0)] = false;
+        }
+      }
+      setMistakes(newMistakes);
       return true;
     },
     checkSolve: () => {
