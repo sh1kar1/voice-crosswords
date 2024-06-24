@@ -2,17 +2,19 @@
 // the main file in the project
 // all rendering logic is here
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useImperativeHandle } from 'react';
 import { createAssistant, createSmartappDebugger } from '@salutejs/client';
 import { IconArrowLeft } from '@salutejs/plasma-icons';
 import { LvlButtonContainer, LevelContainer, DescContainer, BoardContainer, Title, Subtitle, LvlButtonIndex, LvlButtonDesc, LvlButton, Back, DescHeader, Desc, Board, Cell, Index, Input } from './Components';
 import Crossword from './Crossword';
 import * as l from './Levels';
 
+const levels = [l.l1, l.l2, l.l3, l.l4, l.l5, l.l6, l.l7, l.l8, l.l9, l.l10];  // TODO: CHANGE THIS ARRAY AFTER ADDING A NEW LEVEL
+
 const initializeAssistant = (getState: any) => {
-  if (process.env.NODE_ENV === "development") {
+  if (process.env.NODE_ENV === 'development') {
     return createSmartappDebugger({
-      token: process.env.REACT_APP_TOKEN ?? "",
+      token: process.env.REACT_APP_TOKEN ?? '',
       initPhrase: `Запусти ${process.env.REACT_APP_SMARTAPP}`,
       nativePanel: {screenshotMode: true},
       getState,
@@ -21,10 +23,17 @@ const initializeAssistant = (getState: any) => {
   return createAssistant({getState});
 };
 
-const levels = [l.l1, l.l2, l.l3, l.l4, l.l5, l.l6, l.l7, l.l8, l.l9, l.l10];  // TODO: CHANGE THIS ARRAY AFTER ADDING A NEW LEVEL
+interface LevelRef {
+  setWord: (text: string, n: number, isDown: boolean) => boolean;
+}
+
+interface LevelProps {
+  level: number;
+  setLevel: (level: number) => void;
+}
 
 // page with board and description
-const Level: React.FC<{ level: number, setLevel: any }> = ({ level, setLevel }) => {
+const Level = React.forwardRef<LevelRef, LevelProps>(({ level, setLevel }, ref) => {
   const [crossword] = useState<Crossword>(new Crossword(levels[level]));                                                                   // crossword instance matching current level
   const [board, setBoard] = useState<string[][]>(crossword.emptyBoard.map(row => [...row]));                                               // actual board (after user inputs)
   const [mistakes, setMistakes] = useState<boolean[][]>(Array.from({ length: crossword.rows }, () => Array(crossword.cols).fill(false)));  // cells with wrong letters
@@ -64,6 +73,28 @@ const Level: React.FC<{ level: number, setLevel: any }> = ({ level, setLevel }) 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [board]);
+
+  useImperativeHandle(ref, () => ({
+    setWord: (text: string, n: number, isDown: boolean) => {
+      let cur_word;
+      for (let word of crossword.words) {
+        if (word.n == n && word.isDown == isDown) {
+          cur_word = word;
+          break;
+        }
+      }
+      if (cur_word !== undefined && cur_word.text.length === text.length) {
+        const newBoard = board.map(row => [...row]);
+        for (let i = 0; i < text.length; i++) {
+          newBoard[cur_word.row + (cur_word.isDown ? i : 0)][cur_word.col + (!cur_word.isDown ? i : 0)] = text[i];
+        }
+        setBoard(newBoard);
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }));
 
   // callback for user's input in cells
   const handleInputKeyDown = (row: number, col: number, key: string) => {
@@ -187,41 +218,42 @@ const Level: React.FC<{ level: number, setLevel: any }> = ({ level, setLevel }) 
       </LevelContainer>
     </>
   );
-};
+});
 
 // page with levels menu
 const App: React.FC = () => {
   const [level, setLevel] = useState<number>(0);  // current level (0 if user in menu)
 
+  const levelRef = useRef<LevelRef>(null);
+
   type Action =
       | {
-          type: "select_level";
+          type: 'select_level';
           level: number;
         }
       | {
-          type: "enter_word";
+          type: 'enter_word';
           n: number;
           isDown: number;
           answer: string
         };
 
   type Event = {
-    type: "smart_app_data";
+    type: 'smart_app_data';
     action: Action;
     sdk_meta: any;
   }
-
 
   useEffect(() => {
     const assistant = initializeAssistant(() => {});
 
     assistant.on('data', (event: any) => {
       console.log(`assistant.on(data)`, event);
-      if (event.type === "character") {
-        console.log(`assistant.on(data): character: "${event?.character?.id}"`);
-      } else if (event.type === "insets") {
+      if (event.type === 'character') {
+        console.log(`assistant.on(data): character: '${event?.character?.id}'`);
+      } else if (event.type === 'insets') {
         console.log(`assistant.on(data): insets`);
-      } else if (event.type === "feature_launcher") {
+      } else if (event.type === 'feature_launcher') {
         console.log(`assistant.on(data): feature_launcher`);
       } else {
         const event_nsd: Event = event;
@@ -231,18 +263,19 @@ const App: React.FC = () => {
       }
     });
 
-
     const dispatchAssistantAction = (action: Action) => {
       console.log('dispatchAssistantAction', action);
       if (action) {
         switch (action.type) {
-          case "select_level":
+          case 'select_level':
             setLevel(action.level);
             break;
-          case "enter_word":
-            console.log(action.n, action.isDown, action.answer);
-            play_correct_answer();
-            //play_level_select(1);
+          case 'enter_word':
+            if (levelRef.current?.setWord(action.answer, action.n, action.isDown == 1)) {
+              console.log('Слово ввелось');
+            } else {
+              console.log('Слово НЕ ввелось');
+            }
             break;
           default:
             throw new Error;
@@ -279,8 +312,7 @@ const App: React.FC = () => {
         action: {
           action_id: action_id,
           parameters: {
-            // значение поля parameters может быть любым, но должно соответствовать серверной логике
-            value: value, // см.файл src/sc/noteDone.sc смартаппа в Studio Code
+            value: value,
           },
         },
       };
@@ -307,7 +339,7 @@ const App: React.FC = () => {
           </LvlButtonContainer>
         </div>
       ) : (
-        <Level key={level} level={level - 1} setLevel={setLevel}/>
+        <Level ref={levelRef} key={level} level={level - 1} setLevel={setLevel} />
       )}
     </>
   );
