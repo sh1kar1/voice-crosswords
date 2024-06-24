@@ -232,8 +232,10 @@ const Level = React.forwardRef<LevelRef, LevelProps>(({ level, setLevel }, ref) 
 // page with levels menu
 const App: React.FC = () => {
   const [level, setLevel] = useState<number>(0);  // current level (0 if user in menu)
+  const [focusedButton, setFocusedButton] = useState<number>(1);
 
   const levelRef = useRef<LevelRef>(null);
+  const buttonRefs = useRef<(HTMLButtonElement | null)[]>(Array.from({ length: levels.length }, () => null));
 
   type Action =
     | {
@@ -373,6 +375,23 @@ const App: React.FC = () => {
     }
   }, [])
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') {
+        setFocusedButton(Math.max(focusedButton - 1, 1));
+      } else if (e.key === 'ArrowRight') {
+        setFocusedButton(Math.min(focusedButton + 1, levels.length));
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  });
+
+  useEffect(() => {
+    buttonRefs.current[focusedButton - 1]?.focus();
+  });
+
   return (
     <>
       {level === 0 ? (
@@ -381,7 +400,7 @@ const App: React.FC = () => {
           <Subtitle>Выберите уровень:</Subtitle>
           <LvlButtonContainer>
             {levels.map((lvl, lvlIdx) => (
-              <LvlButton onClick={() => setLevel(lvlIdx + 1)}>
+              <LvlButton onClick={() => setLevel(lvlIdx + 1)} ref={el => buttonRefs.current[lvlIdx] = el}>
                 <LvlButtonIndex>{lvlIdx + 1}</LvlButtonIndex>
                 <LvlButtonDesc>«{new Crossword(lvl).words[0].desc}»</LvlButtonDesc>
               </LvlButton>

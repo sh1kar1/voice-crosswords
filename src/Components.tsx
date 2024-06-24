@@ -117,10 +117,6 @@ export const LvlButton = styled.button`
 
   background-color: ${surfaceLiquid02};
 
-  &:hover {
-    outline: 0.3rem solid;
-  }
-
   &:focus {
     outline: 0.3rem solid;
   }
