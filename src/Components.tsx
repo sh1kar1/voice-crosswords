@@ -72,6 +72,7 @@ export const Subtitle = styled.div`
   margin: 1.25rem;
 
   font-size: 1.75rem;
+  font-style: italic;
 `;
 
 export const LvlButtonIndex = styled.div`
