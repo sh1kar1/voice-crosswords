@@ -3,7 +3,7 @@
 // all rendering logic is here
 
 import React, { useState, useEffect, useRef, useImperativeHandle } from 'react';
-import { createAssistant, createSmartappDebugger } from '@salutejs/client';
+import { createAssistant, createSmartappDebugger, AssistantAppState } from '@salutejs/client';
 import { IconArrowLeft } from '@salutejs/plasma-icons';
 import { LvlButtonContainer, LevelContainer, DescContainer, BoardContainer, Title, Subtitle, LvlButtonIndex, LvlButtonDesc, LvlButton, Back, DescHeader, Desc, Board, Cell, Index, Input } from './Components';
 import Crossword from './Crossword';
@@ -37,7 +37,7 @@ interface LevelProps {
 // page with board and description
 const Level = React.forwardRef<LevelRef, LevelProps>(({ level, setLevel }, ref) => {
   const [crossword] = useState<Crossword>(new Crossword(levels[level]));                                                                   // crossword instance matching current level
-  const [board, setBoard] = useState<string[][]>(crossword.board.map(row => [...row]));                                                    // actual board (after user inputs)
+  const [board, setBoard] = useState<string[][]>(crossword.emptyBoard.map(row => [...row]));                                                    // actual board (after user inputs)
   const [mistakes, setMistakes] = useState<boolean[][]>(Array.from({ length: crossword.rows }, () => Array(crossword.cols).fill(false)));  // cells with wrong letters
   const [focusedWord, setFocusedWord] = useState<number[]>([0, 0]);                                                                        // number of the focused word (vertical and horizontal)
   const [focusedCell, setFocusedCell] = useState<number[]>([-1, -1]);                                                                      // row and column of the focused cell
@@ -237,6 +237,9 @@ const App: React.FC = () => {
   const levelRef = useRef<LevelRef>(null);
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>(Array.from({ length: levels.length }, () => null));
 
+  const assistantRef = useRef<ReturnType<typeof createAssistant>>();
+  const assistantStateRef = useRef<AssistantAppState>();
+
   type Action =
     | {
         type: 'select_level';
@@ -264,9 +267,14 @@ const App: React.FC = () => {
   }
 
   useEffect(() => {
-    const assistant = initializeAssistant(() => {});
+    console.log(level);
+    assistantStateRef.current = { level: level };
+  }, [level]);
 
-    assistant.on('data', (event: any) => {
+  useEffect(() => {
+    assistantRef.current = initializeAssistant(() => assistantStateRef.current);
+
+    assistantRef.current.on('data', (event: any) => {
       console.log(`assistant.on(data)`, event);
       if (event.type === 'character') {
         console.log(`assistant.on(data): character: '${event?.character?.id}'`);
@@ -290,7 +298,9 @@ const App: React.FC = () => {
             console.log('выбран уровень', action.level);
             if (action.level <= levels.length) {
               setLevel(action.level);
-              play_level_select(action.level);
+              if (action.level > 0) {
+                play_level_select(action.level);
+              }
             }
             else {
               play_no_such_level();
@@ -315,7 +325,7 @@ const App: React.FC = () => {
           case 'check':
             if (levelRef.current?.checkSolve()) {
               console.log('Ошибок НЕТ');
-              play_all_correct_continue();
+              play_all_correct_finish();
             } else {
               console.log('Ошибки есть');
               play_mistakes();
@@ -326,54 +336,53 @@ const App: React.FC = () => {
         }
       }
     }
-
-    const play_mistakes = () => {
-      _send_action_value('mistakes');
-    }
-
-    const play_all_correct_continue = () => {
-      _send_action_value('all_correct_continue');
-    }
-
-    const play_all_correct_finish = () => {
-      _send_action_value('all_correct_finish');
-    }
-
-    const play_failed_to_delete = () => {
-      _send_action_value('failed_to_delete');
-    }
-
-    const play_back_to_menu = () => {
-      _send_action_value('back_to_menu');
-    }
-
-    const play_level_select = (lvl: number) => {
-      _send_action_value('level_select_success', lvl);
-    }
-
-    const play_no_such_level = () => {
-      _send_action_value('no_such_level');
-    }
-
-    const play_failed_to_enter_word = (word: string) => {
-      _send_action_value('failed_to_enter_word', word);
-    }
-
-    const _send_action_value = (action_id: string, value: any = 0) => {
-      const data = {
-        action: {
-          action_id: action_id,
-          parameters: {
-            value: value,
-          },
-        },
-      };
-      const unsubscribe = assistant.sendData(data, (data) => {
-        console.log('sendData onData:', data);
-        unsubscribe();
-      });
-    }
   }, [])
+
+  const play_mistakes = () => {
+    _send_action_value('mistakes');
+  }
+
+  const play_all_correct_finish = () => {
+    _send_action_value('all_correct_finish');
+  }
+
+  const play_failed_to_delete = () => {
+    _send_action_value('failed_to_delete');
+  }
+
+  const play_back_to_menu = () => {
+    _send_action_value('back_to_menu');
+  }
+
+  const play_level_select = (lvl: number) => {
+    _send_action_value('level_select_success', lvl);
+  }
+
+  const play_no_such_level = () => {
+    _send_action_value('no_such_level');
+  }
+
+  const play_failed_to_enter_word = (word: string) => {
+    _send_action_value('failed_to_enter_word', word);
+  }
+
+  const _send_action_value = (action_id: string, value: any = 0) => {
+    const data = {
+      action: {
+        action_id: action_id,
+        parameters: {
+          value: value,
+        },
+      },
+    };
+    if (!assistantRef.current) {
+      return;
+    }
+    const unsubscribe = assistantRef.current.sendData(data, (data) => {
+      console.log('sendData onData:', data);
+      unsubscribe();
+    });
+  }
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -400,7 +409,7 @@ const App: React.FC = () => {
           <Subtitle>Выберите уровень:</Subtitle>
           <LvlButtonContainer>
             {levels.map((lvl, lvlIdx) => (
-              <LvlButton onClick={() => setLevel(lvlIdx + 1)} ref={el => buttonRefs.current[lvlIdx] = el}>
+              <LvlButton onClick={() => {setLevel(lvlIdx + 1); play_level_select(lvlIdx + 1)}} ref={el => buttonRefs.current[lvlIdx] = el}>
                 <LvlButtonIndex>{lvlIdx + 1}</LvlButtonIndex>
                 <LvlButtonDesc>«{new Crossword(lvl).words[0].desc}»</LvlButtonDesc>
               </LvlButton>
