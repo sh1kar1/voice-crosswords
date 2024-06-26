@@ -309,7 +309,7 @@ const Menu: React.FC<LevelProps> = ({ level, setLevel }) => {
             console.log('выбран уровень', action.level);
             if (action.level <= levels.length) {
               setLevel(action.level);
-              navigate('/' + String(action.level));
+              navigate('/' + String(action.level + 1));
               if (action.level > 0) {
                 play_level_select(action.level);
               }
@@ -423,7 +423,7 @@ const Menu: React.FC<LevelProps> = ({ level, setLevel }) => {
       <Subtitle>Выберите уровень:</Subtitle>
       <LvlButtonContainer>
         {levels.map((lvl, lvlIdx) => (
-          <LvlButton onClick={() => { setLevel(lvlIdx + 1); navigate('/' + String(lvlIdx)); play_level_select(lvlIdx + 1); }} ref={el => buttonRefs.current[lvlIdx] = el}>
+          <LvlButton onClick={() => { setLevel(lvlIdx + 1); navigate('/' + String(lvlIdx + 1)); play_level_select(lvlIdx + 1); }} ref={el => buttonRefs.current[lvlIdx] = el}>
             <LvlButtonIndex>{lvlIdx + 1}</LvlButtonIndex>
             <LvlButtonDesc>«{new Crossword(lvl).words[0].desc}»</LvlButtonDesc>
           </LvlButton>
@@ -440,7 +440,7 @@ const App: React.FC = () => {
     <Routes>
       <Route path='/' element={<Menu level={level} setLevel={setLevel} />} />
       {levels.map((_, lvlIdx) => (
-        <Route path={'/' + String(lvlIdx)} element={<Level level={lvlIdx} setLevel={setLevel} />} />
+        <Route path={'/' + String(lvlIdx + 1)} element={<Level level={lvlIdx} setLevel={setLevel} />} />
       ))}
     </Routes>
   );
