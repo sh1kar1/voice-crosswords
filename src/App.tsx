@@ -398,7 +398,9 @@ const App: React.FC = () => {
   });
 
   useEffect(() => {
-    buttonRefs.current[focusedButton - 1]?.focus();
+    if (level === 0) {
+      buttonRefs.current[focusedButton - 1]?.focus();
+    }
   });
 
   return (
