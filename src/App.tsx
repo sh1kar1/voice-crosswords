@@ -392,9 +392,9 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft') {
+      if (e.key === 'ArrowLeft' && level === 0) {
         setFocusedButton(Math.max(focusedButton - 1, 1));
-      } else if (e.key === 'ArrowRight') {
+      } else if (e.key === 'ArrowRight' && level === 0) {
         setFocusedButton(Math.min(focusedButton + 1, levels.length));
       }
     };
@@ -406,6 +406,8 @@ const App: React.FC = () => {
   useEffect(() => {
     if (level === 0) {
       buttonRefs.current[focusedButton - 1]?.focus();
+    } else {
+      buttonRefs.current[focusedButton - 1]?.blur();
     }
   });
 
@@ -417,7 +419,7 @@ const App: React.FC = () => {
           <Subtitle>Выберите уровень:</Subtitle>
           <LvlButtonContainer>
             {levels.map((lvl, lvlIdx) => (
-              <LvlButton onClick={() => {setLevel(lvlIdx + 1); play_level_select(lvlIdx + 1)}} ref={el => buttonRefs.current[lvlIdx] = el}>
+              <LvlButton onClick={() => { setLevel(lvlIdx + 1); play_level_select(lvlIdx + 1); }} ref={el => buttonRefs.current[lvlIdx] = el}>
                 <LvlButtonIndex>{lvlIdx + 1}</LvlButtonIndex>
                 <LvlButtonDesc>«{new Crossword(lvl).words[0].desc}»</LvlButtonDesc>
               </LvlButton>
