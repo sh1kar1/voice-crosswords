@@ -3,6 +3,7 @@
 // all rendering logic is here
 
 import React, { useState, useEffect, useRef, useImperativeHandle } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import { createAssistant, createSmartappDebugger, AssistantAppState } from '@salutejs/client';
 import { IconArrowLeft } from '@salutejs/plasma-icons';
 import { LvlButtonContainer, LevelContainer, DescContainer, BoardContainer, Title, Subtitle, LvlButtonIndex, LvlButtonDesc, LvlButton, Back, DescHeader, Desc, Board, Cell, Index, Input } from './Components';
@@ -47,6 +48,8 @@ const Level = React.forwardRef<LevelRef, LevelProps>(({ level, setLevel }, ref) 
   const inputRefs = useRef<(HTMLInputElement | null)[][]>([]);                                                                             // refs for moving focus
   inputRefs.current = Array.from({ length: crossword.rows }, () => Array(crossword.cols).fill(null));
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     // callback for hotkeys
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -60,6 +63,7 @@ const Level = React.forwardRef<LevelRef, LevelProps>(({ level, setLevel }, ref) 
       } else if (e.key === 'Escape') {
         // back to levels menu
         setLevel(0);
+        navigate('/');
       }
     };
 
@@ -176,7 +180,7 @@ const Level = React.forwardRef<LevelRef, LevelProps>(({ level, setLevel }, ref) 
 
   return (
     <>
-      <Back contentLeft={<IconArrowLeft />} onClick={() => setLevel(0)} />
+      <Back contentLeft={<IconArrowLeft />} onClick={() => { setLevel(0); navigate('/'); }} />
       <LevelContainer>
         <DescContainer>
           <div>
@@ -230,12 +234,13 @@ const Level = React.forwardRef<LevelRef, LevelProps>(({ level, setLevel }, ref) 
 });
 
 // page with levels menu
-const App: React.FC = () => {
-  const [level, setLevel] = useState<number>(0);  // current level (0 if user in menu)
+const Menu: React.FC<LevelProps> = ({ level, setLevel }) => {
   const [focusedButton, setFocusedButton] = useState<number>(1);
 
   const levelRef = useRef<LevelRef>(null);
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>(Array.from({ length: levels.length }, () => null));
+
+  const navigate = useNavigate();
 
   const assistantRef = useRef<ReturnType<typeof createAssistant>>();
   const assistantStateRef = useRef<AssistantAppState>();
@@ -304,6 +309,7 @@ const App: React.FC = () => {
             console.log('выбран уровень', action.level);
             if (action.level <= levels.length) {
               setLevel(action.level);
+              navigate('/' + String(action.level));
               if (action.level > 0) {
                 play_level_select(action.level);
               }
@@ -413,23 +419,30 @@ const App: React.FC = () => {
 
   return (
     <>
-      {level === 0 ? (
-        <div>
-          <Title>Кроссворды</Title>
-          <Subtitle>Выберите уровень:</Subtitle>
-          <LvlButtonContainer>
-            {levels.map((lvl, lvlIdx) => (
-              <LvlButton onClick={() => { setLevel(lvlIdx + 1); play_level_select(lvlIdx + 1); }} ref={el => buttonRefs.current[lvlIdx] = el}>
-                <LvlButtonIndex>{lvlIdx + 1}</LvlButtonIndex>
-                <LvlButtonDesc>«{new Crossword(lvl).words[0].desc}»</LvlButtonDesc>
-              </LvlButton>
-            ))}
-          </LvlButtonContainer>
-        </div>
-      ) : (
-        <Level ref={levelRef} key={level} level={level - 1} setLevel={setLevel} />
-      )}
+      <Title>Кроссворды</Title>
+      <Subtitle>Выберите уровень:</Subtitle>
+      <LvlButtonContainer>
+        {levels.map((lvl, lvlIdx) => (
+          <LvlButton onClick={() => { setLevel(lvlIdx + 1); navigate('/' + String(lvlIdx)); play_level_select(lvlIdx + 1); }} ref={el => buttonRefs.current[lvlIdx] = el}>
+            <LvlButtonIndex>{lvlIdx + 1}</LvlButtonIndex>
+            <LvlButtonDesc>«{new Crossword(lvl).words[0].desc}»</LvlButtonDesc>
+          </LvlButton>
+        ))}
+      </LvlButtonContainer>
     </>
+  );
+};
+
+const App: React.FC = () => {
+  const [level, setLevel] = useState<number>(0);  // current level (0 if user in menu)
+
+  return (
+    <Routes>
+      <Route path='/' element={<Menu level={level} setLevel={setLevel} />} />
+      {levels.map((_, lvlIdx) => (
+        <Route path={'/' + String(lvlIdx)} element={<Level level={lvlIdx} setLevel={setLevel} />} />
+      ))}
+    </Routes>
   );
 };
 
