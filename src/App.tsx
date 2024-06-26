@@ -308,13 +308,14 @@ const Menu: React.FC<LevelProps> = ({ level, setLevel }) => {
           case 'select_level':
             console.log('выбран уровень', action.level);
             if (action.level <= levels.length) {
-              setLevel(action.level);
-              navigate('/' + String(action.level));
               if (action.level > 0) {
+                setLevel(action.level);
+                navigate('/' + String(action.level));
                 play_level_select(action.level);
+              } else {
+                navigate('/');
               }
-            }
-            else {
+            } else {
               play_no_such_level();
             }
             break;
