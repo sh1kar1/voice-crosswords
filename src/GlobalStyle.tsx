@@ -38,25 +38,25 @@ const GlobalStyle = createGlobalStyle`
 
   @media (max-width: 559px) {
     :root {
-      font-size: 4px;
+      font-size: 6px;
     }
   }
 
   @media (min-width: 560px) and (max-width: 1119px) {
     :root {
-      font-size: 8px;
+      font-size: 10px;
     }
   }
 
   @media (min-width: 1120px) and (max-width: 1919px) {
     :root {
-      font-size: 12px;
+      font-size: 14px;
     }
   }
 
   @media (min-width: 1920px) {
     :root {
-      font-size: 16px;
+      font-size: 18px;
     }
   }
 `;

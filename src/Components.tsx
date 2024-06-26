@@ -156,10 +156,10 @@ export const Cell = styled.td`
 
 export const Index = styled.div`
   position: absolute;
-  top: 0.05rem;
+  top: -0.05rem;
   left: 0.05rem;
 
-  font-size: 0.7rem;
+  font-size: 0.85rem;
 
   &::selection {
     background: transparent;
