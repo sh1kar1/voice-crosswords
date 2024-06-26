@@ -61,9 +61,9 @@ export const BoardContainer = styled.div`
 export const Title = styled.div`
   display: flex;
   justify-content: center;
-  margin: 8vh;
+  margin: 6vh;
 
-  font-size: 5rem;
+  font-size: 4rem;
 `;
 
 export const Subtitle = styled.div`
