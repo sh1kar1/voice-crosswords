@@ -266,9 +266,15 @@ const App: React.FC = () => {
     sdk_meta: any;
   }
 
+  let first_time_in_menu = true;
+
   useEffect(() => {
     console.log(level);
     assistantStateRef.current = { level: level };
+    if (level === 0 && first_time_in_menu) {
+      play_back_to_menu();
+    }
+    first_time_in_menu = false;
   }, [level]);
 
   useEffect(() => {
