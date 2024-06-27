@@ -5,8 +5,7 @@
 import React, { useState, useEffect, useRef, useImperativeHandle } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { createAssistant, createSmartappDebugger, AssistantAppState } from '@salutejs/client';
-import { IconArrowLeft } from '@salutejs/plasma-icons';
-import { LvlButtonContainer, LevelContainer, DescContainer, BoardContainer, Title, Subtitle, LvlButtonIndex, LvlButtonDesc, LvlButton, Back, DescHeader, Desc, Board, Cell, Index, Input } from './Components';
+import { LvlButtonContainer, LevelContainer, DescContainer, BoardContainer, Title, Subtitle, LvlButtonIndex, LvlButtonDesc, LvlButton, DescHeader, Desc, Board, Cell, Index, Input } from './Components';
 import Crossword from './Crossword';
 import * as l from './Levels';
 
@@ -33,6 +32,12 @@ interface LevelRef {
 interface LevelProps {
   level: number;
   setLevel: (level: number) => void;
+}
+
+interface MenuProps {
+  level: number;
+  setLevel: (level: number) => void;
+  levelRef: React.RefObject<LevelRef>;
 }
 
 // page with board and description
@@ -233,10 +238,9 @@ const Level = React.forwardRef<LevelRef, LevelProps>(({ level, setLevel }, ref) 
 });
 
 // page with levels menu
-const Menu: React.FC<LevelProps> = ({ level, setLevel }) => {
+const Menu: React.FC<MenuProps> = ({ level, setLevel, levelRef }) => {
   const [focusedButton, setFocusedButton] = useState<number>(1);
 
-  const levelRef = useRef<LevelRef>(null);
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>(Array.from({ length: levels.length }, () => null));
 
   const navigate = useNavigate();
@@ -436,11 +440,13 @@ const Menu: React.FC<LevelProps> = ({ level, setLevel }) => {
 const App: React.FC = () => {
   const [level, setLevel] = useState<number>(0);  // current level (0 if user in menu)
 
+  const levelRef = useRef<LevelRef>(null);
+
   return (
     <Routes>
-      <Route path='/' element={<Menu level={level} setLevel={setLevel} />} />
+      <Route path='/' element={<Menu level={level} setLevel={setLevel} levelRef={levelRef} />} />
       {levels.map((_, lvlIdx) => (
-        <Route path={'/' + String(lvlIdx + 1)} element={<Level level={lvlIdx} setLevel={setLevel} />} />
+        <Route path={'/' + String(lvlIdx + 1)} element={<Level level={lvlIdx} setLevel={setLevel} ref={levelRef} />} />
       ))}
     </Routes>
   );

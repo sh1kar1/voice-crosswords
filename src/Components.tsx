@@ -3,7 +3,6 @@
 
 import styled from 'styled-components';
 import { text, surfaceLiquid02 } from '@salutejs/plasma-tokens';
-import { Button } from '@salutejs/plasma-ui';
 
 export const LvlButtonContainer = styled.div`
   display: flex;
@@ -120,10 +119,6 @@ export const LvlButton = styled.button`
   &:focus {
     outline: 0.3rem solid;
   }
-`;
-
-export const Back = styled(Button)`
-  position: absolute;
 `;
 
 export const DescHeader = styled.div`
