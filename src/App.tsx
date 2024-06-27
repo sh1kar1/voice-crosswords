@@ -184,56 +184,56 @@ const Level = React.forwardRef<LevelRef, LevelProps>(({ level, setLevel }, ref) 
   };
 
   return (
-      <>
-        <LevelContainer>
-          <DescContainer>
-            <div>
-              <DescHeader>По вертикали:</DescHeader>
-              {crossword.downDesc.map((desc, descIdx) => (
-                  <Desc key={descIdx} isFocused={crossword.descOnFocus(true, focusedWord, descIdx)}>{desc}</Desc>
-              ))}
-            </div>
-          </DescContainer>
-          <BoardContainer>
-            <Board>
-              <tbody>
-              {board.map((row, rowIdx) => (
-                  <tr key={rowIdx}>
-                    {row.map((cell, colIdx) => (
-                        <Cell key={colIdx} content={cell}>
-                          <Index hidden={crossword.indexOnFocus(focusedCell[0], focusedCell[1], rowIdx, colIdx)}>{crossword.cellToWordsStartN[rowIdx][colIdx]}</Index>
-                          <Input
-                              hidden={cell === ' '}
-                              disabled={solved}
-                              type='text'
-                              value={cell}
-                              maxLength={1}
-                              ref={(el) => inputRefs.current[rowIdx][colIdx] = el}
-                              inWord={crossword.cellInWord(focusedWord[0], focusedWord[1], rowIdx, colIdx)}
-                              isMistake={mistakes[rowIdx][colIdx]}
-                              isSolved={solved}
-                              onFocus={() => { setFocusedWord(crossword.cellToWordsN[rowIdx][colIdx]); setFocusedCell([rowIdx, colIdx]); }}
-                              onBlur={() => { setFocusedWord([0, 0]); setFocusedCell([-1, -1]); }}
-                              onKeyDown={(e) => { e.preventDefault(); handleInputKeyDown(rowIdx, colIdx, e.key); }}
-                              readOnly
-                          />
-                        </Cell>
-                    ))}
-                  </tr>
-              ))}
-              </tbody>
-            </Board>
-          </BoardContainer>
-          <DescContainer>
-            <div>
-              <DescHeader>По горизонтали:</DescHeader>
-              {crossword.acrossDesc.map((desc, descIdx) => (
-                  <Desc key={descIdx} isFocused={crossword.descOnFocus(false, focusedWord, descIdx)}>{desc}</Desc>
-              ))}
-            </div>
-          </DescContainer>
-        </LevelContainer>
-      </>
+    <>
+      <LevelContainer>
+        <DescContainer>
+          <div>
+            <DescHeader>По вертикали:</DescHeader>
+            {crossword.downDesc.map((desc, descIdx) => (
+              <Desc key={descIdx} isFocused={crossword.descOnFocus(true, focusedWord, descIdx)}>{desc}</Desc>
+            ))}
+          </div>
+        </DescContainer>
+        <BoardContainer>
+          <Board>
+            <tbody>
+            {board.map((row, rowIdx) => (
+              <tr key={rowIdx}>
+                {row.map((cell, colIdx) => (
+                  <Cell key={colIdx} content={cell}>
+                    <Index hidden={crossword.indexOnFocus(focusedCell[0], focusedCell[1], rowIdx, colIdx)}>{crossword.cellToWordsStartN[rowIdx][colIdx]}</Index>
+                    <Input
+                      hidden={cell === ' '}
+                      disabled={solved}
+                      type='text'
+                      value={cell}
+                      maxLength={1}
+                      ref={(el) => inputRefs.current[rowIdx][colIdx] = el}
+                      inWord={crossword.cellInWord(focusedWord[0], focusedWord[1], rowIdx, colIdx)}
+                      isMistake={mistakes[rowIdx][colIdx]}
+                      isSolved={solved}
+                      onFocus={() => { setFocusedWord(crossword.cellToWordsN[rowIdx][colIdx]); setFocusedCell([rowIdx, colIdx]); }}
+                      onBlur={() => { setFocusedWord([0, 0]); setFocusedCell([-1, -1]); }}
+                      onKeyDown={(e) => { e.preventDefault(); handleInputKeyDown(rowIdx, colIdx, e.key); }}
+                      readOnly
+                    />
+                  </Cell>
+                ))}
+              </tr>
+            ))}
+            </tbody>
+          </Board>
+        </BoardContainer>
+        <DescContainer>
+          <div>
+            <DescHeader>По горизонтали:</DescHeader>
+            {crossword.acrossDesc.map((desc, descIdx) => (
+              <Desc key={descIdx} isFocused={crossword.descOnFocus(false, focusedWord, descIdx)}>{desc}</Desc>
+            ))}
+          </div>
+        </DescContainer>
+      </LevelContainer>
+    </>
   );
 });
 
@@ -249,24 +249,24 @@ const Menu: React.FC<MenuProps> = ({ level, setLevel, levelRef }) => {
   const assistantStateRef = useRef<AssistantAppState>();
 
   type Action =
-      | {
-          type: 'select_level';
-          level: number;
-        }
-      | {
-          type: 'enter_word';
-          n: number;
-          isDown: number;
-          answer: string
-        }
-      | {
-          type: 'delete_word';
-          n: number;
-          isDown: number;
-        }
-      | {
-          type: 'check';
-        };
+    | {
+        type: 'select_level';
+        level: number;
+      }
+    | {
+        type: 'enter_word';
+        n: number;
+        isDown: number;
+        answer: string
+      }
+    | {
+        type: 'delete_word';
+        n: number;
+        isDown: number;
+      }
+    | {
+        type: 'check';
+      };
 
   type Event = {
     type: 'smart_app_data';
@@ -274,15 +274,15 @@ const Menu: React.FC<MenuProps> = ({ level, setLevel, levelRef }) => {
     sdk_meta: any;
   }
 
-  let first_time_in_menu = true;
+  let firstTimeInMenu = true;
 
   useEffect(() => {
     console.log(level);
     assistantStateRef.current = { level: level };
-    if (level === 0 && first_time_in_menu) {
-      play_back_to_menu();
+    if (level === 0 && firstTimeInMenu) {
+      playBackToMenu();
     }
-    first_time_in_menu = false;
+    firstTimeInMenu = false;
   }, [level]);
 
   useEffect(() => {
@@ -314,12 +314,12 @@ const Menu: React.FC<MenuProps> = ({ level, setLevel, levelRef }) => {
               setLevel(action.level);
               if (action.level > 0) {
                 navigate('/' + String(action.level));
-                play_level_select(action.level);
+                playLevelSelect(action.level);
               } else {
                 navigate('/');
               }
             } else {
-              play_no_such_level();
+              playNoSuchLevel();
             }
             break;
           case 'enter_word':
@@ -327,7 +327,7 @@ const Menu: React.FC<MenuProps> = ({ level, setLevel, levelRef }) => {
               console.log('Слово ввелось');
             } else {
               console.log('Слово НЕ ввелось');
-              play_failed_to_enter_word(action.answer);
+              playFailedToEnterWord(action.answer);
             }
             break;
           case 'delete_word':
@@ -335,16 +335,16 @@ const Menu: React.FC<MenuProps> = ({ level, setLevel, levelRef }) => {
               console.log('Слово удалилось');
             } else {
               console.log('Слово НЕ удалилось');
-              play_failed_to_delete();
+              playFailedToDelete();
             }
             break;
           case 'check':
             if (levelRef.current?.checkSolve()) {
               console.log('Ошибок НЕТ');
-              play_all_correct_finish();
+              playAllCorrectFinish();
             } else {
               console.log('Ошибки есть');
-              play_mistakes();
+              playMistakes();
             }
             break;
           default:
@@ -354,31 +354,31 @@ const Menu: React.FC<MenuProps> = ({ level, setLevel, levelRef }) => {
     }
   }, [])
 
-  const play_mistakes = () => {
+  const playMistakes = () => {
     _send_action_value('mistakes');
   }
 
-  const play_all_correct_finish = () => {
+  const playAllCorrectFinish = () => {
     _send_action_value('all_correct_finish');
   }
 
-  const play_failed_to_delete = () => {
+  const playFailedToDelete = () => {
     _send_action_value('failed_to_delete');
   }
 
-  const play_back_to_menu = () => {
+  const playBackToMenu = () => {
     _send_action_value('back_to_menu');
   }
 
-  const play_level_select = (lvl: number) => {
+  const playLevelSelect = (lvl: number) => {
     _send_action_value('level_select_success', lvl);
   }
 
-  const play_no_such_level = () => {
+  const playNoSuchLevel = () => {
     _send_action_value('no_such_level');
   }
 
-  const play_failed_to_enter_word = (word: string) => {
+  const playFailedToEnterWord = (word: string) => {
     _send_action_value('failed_to_enter_word', word);
   }
 
@@ -422,33 +422,42 @@ const Menu: React.FC<MenuProps> = ({ level, setLevel, levelRef }) => {
   });
 
   return (
-      <>
-        <Title>Кроссворды</Title>
-        <Subtitle>Выберите уровень:</Subtitle>
-        <LvlButtonContainer>
-          {levels.map((lvl, lvlIdx) => (
-              <LvlButton onClick={() => { setLevel(lvlIdx + 1); navigate('/' + String(lvlIdx + 1)); play_level_select(lvlIdx + 1); }} ref={el => buttonRefs.current[lvlIdx] = el}>
-                <LvlButtonIndex>{lvlIdx + 1}</LvlButtonIndex>
-                <LvlButtonDesc>«{new Crossword(lvl).words[0].desc}»</LvlButtonDesc>
-              </LvlButton>
-          ))}
-        </LvlButtonContainer>
-      </>
+    <>
+      <Title>Кроссворды</Title>
+      <Subtitle>Выберите уровень:</Subtitle>
+      <LvlButtonContainer>
+        {levels.map((lvl, lvlIdx) => (
+          <LvlButton onClick={() => { setLevel(lvlIdx + 1); navigate('/' + String(lvlIdx + 1)); playLevelSelect(lvlIdx + 1); }} ref={el => buttonRefs.current[lvlIdx] = el}>
+            <LvlButtonIndex>{lvlIdx + 1}</LvlButtonIndex>
+            <LvlButtonDesc>«{new Crossword(lvl).words[0].desc}»</LvlButtonDesc>
+          </LvlButton>
+        ))}
+      </LvlButtonContainer>
+    </>
   );
 };
 
 const App: React.FC = () => {
-  const [level, setLevel] = useState<number>(0);  // current level (0 if user in menu)
+  const [level, setLevel] = useState<number>(0);
 
   const levelRef = useRef<LevelRef>(null);
 
+  useEffect(() => {
+    const handlePopState = () => {
+      setLevel(0);
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
   return (
-      <Routes>
-        <Route path='/' element={<Menu level={level} setLevel={setLevel} levelRef={levelRef} />} />
-        {levels.map((_, lvlIdx) => (
-            <Route path={'/' + String(lvlIdx + 1)} element={<Level level={lvlIdx} setLevel={setLevel} ref={levelRef} />} />
-        ))}
-      </Routes>
+    <Routes>
+      <Route path='/' element={<Menu level={level} setLevel={setLevel} levelRef={levelRef} />} />
+      {levels.map((_, lvlIdx) => (
+        <Route path={'/' + String(lvlIdx + 1)} element={<Level level={lvlIdx} setLevel={setLevel} ref={levelRef} />} />
+      ))}
+    </Routes>
   );
 };
 
