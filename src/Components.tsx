@@ -15,7 +15,7 @@ export const LevelContainer = styled.div`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  height: 90vh;
+  height: 85vh;
 
   @media (orientation: portrait) {
     flex-direction: column;
@@ -61,7 +61,7 @@ export const BoardContainer = styled.div`
 export const Title = styled.div`
   display: flex;
   justify-content: center;
-  margin: 6vh;
+  margin: 5vh;
 
   font-size: 4rem;
 `;
@@ -157,7 +157,7 @@ export const Cell = styled.td`
 export const Index = styled.div`
   position: absolute;
   top: -0.05rem;
-  left: 0.05rem;
+  left: 0.0rem;
 
   font-size: 0.85rem;
 

@@ -180,7 +180,6 @@ const Level = React.forwardRef<LevelRef, LevelProps>(({ level, setLevel }, ref) 
 
   return (
     <>
-      <Back contentLeft={<IconArrowLeft />} onClick={() => { setLevel(0); navigate('/'); }} />
       <LevelContainer>
         <DescContainer>
           <div>
