@@ -9,7 +9,7 @@ import { LvlButtonContainer, LevelContainer, DescContainer, BoardContainer, Titl
 import Crossword from './Crossword';
 import * as l from './Levels';
 
-const levels = [l.l1, l.l2, l.l3, l.l4, l.l5];  // TODO: CHANGE THIS ARRAY AFTER ADDING A NEW LEVEL
+const levels = [l.l1, l.l2, l.l3, l.l4, l.l5, l.l6, l.l7, l.l8, l.l9, l.l10];  // TODO: CHANGE THIS ARRAY AFTER ADDING A NEW LEVEL
 
 const initializeAssistant = (getState: any) => {
   if (process.env.NODE_ENV === 'development') {
@@ -184,56 +184,56 @@ const Level = React.forwardRef<LevelRef, LevelProps>(({ level, setLevel }, ref) 
   };
 
   return (
-    <>
-      <LevelContainer>
-        <DescContainer>
-          <div>
-            <DescHeader>По вертикали:</DescHeader>
-            {crossword.downDesc.map((desc, descIdx) => (
-              <Desc key={descIdx} isFocused={crossword.descOnFocus(true, focusedWord, descIdx)}>{desc}</Desc>
-            ))}
-          </div>
-        </DescContainer>
-        <BoardContainer>
-          <Board>
-            <tbody>
-            {board.map((row, rowIdx) => (
-              <tr key={rowIdx}>
-                {row.map((cell, colIdx) => (
-                  <Cell key={colIdx} content={cell}>
-                    <Index hidden={crossword.indexOnFocus(focusedCell[0], focusedCell[1], rowIdx, colIdx)}>{crossword.cellToWordsStartN[rowIdx][colIdx]}</Index>
-                    <Input
-                      hidden={cell === ' '}
-                      disabled={solved}
-                      type='text'
-                      value={cell}
-                      maxLength={1}
-                      ref={(el) => inputRefs.current[rowIdx][colIdx] = el}
-                      inWord={crossword.cellInWord(focusedWord[0], focusedWord[1], rowIdx, colIdx)}
-                      isMistake={mistakes[rowIdx][colIdx]}
-                      isSolved={solved}
-                      onFocus={() => { setFocusedWord(crossword.cellToWordsN[rowIdx][colIdx]); setFocusedCell([rowIdx, colIdx]); }}
-                      onBlur={() => { setFocusedWord([0, 0]); setFocusedCell([-1, -1]); }}
-                      onKeyDown={(e) => { e.preventDefault(); handleInputKeyDown(rowIdx, colIdx, e.key); }}
-                      readOnly
-                    />
-                  </Cell>
-                ))}
-              </tr>
-            ))}
-            </tbody>
-          </Board>
-        </BoardContainer>
-        <DescContainer>
-          <div>
-            <DescHeader>По горизонтали:</DescHeader>
-            {crossword.acrossDesc.map((desc, descIdx) => (
-              <Desc key={descIdx} isFocused={crossword.descOnFocus(false, focusedWord, descIdx)}>{desc}</Desc>
-            ))}
-          </div>
-        </DescContainer>
-      </LevelContainer>
-    </>
+      <>
+        <LevelContainer>
+          <DescContainer>
+            <div>
+              <DescHeader>По вертикали:</DescHeader>
+              {crossword.downDesc.map((desc, descIdx) => (
+                  <Desc key={descIdx} isFocused={crossword.descOnFocus(true, focusedWord, descIdx)}>{desc}</Desc>
+              ))}
+            </div>
+          </DescContainer>
+          <BoardContainer>
+            <Board>
+              <tbody>
+              {board.map((row, rowIdx) => (
+                  <tr key={rowIdx}>
+                    {row.map((cell, colIdx) => (
+                        <Cell key={colIdx} content={cell}>
+                          <Index hidden={crossword.indexOnFocus(focusedCell[0], focusedCell[1], rowIdx, colIdx)}>{crossword.cellToWordsStartN[rowIdx][colIdx]}</Index>
+                          <Input
+                              hidden={cell === ' '}
+                              disabled={solved}
+                              type='text'
+                              value={cell}
+                              maxLength={1}
+                              ref={(el) => inputRefs.current[rowIdx][colIdx] = el}
+                              inWord={crossword.cellInWord(focusedWord[0], focusedWord[1], rowIdx, colIdx)}
+                              isMistake={mistakes[rowIdx][colIdx]}
+                              isSolved={solved}
+                              onFocus={() => { setFocusedWord(crossword.cellToWordsN[rowIdx][colIdx]); setFocusedCell([rowIdx, colIdx]); }}
+                              onBlur={() => { setFocusedWord([0, 0]); setFocusedCell([-1, -1]); }}
+                              onKeyDown={(e) => { e.preventDefault(); handleInputKeyDown(rowIdx, colIdx, e.key); }}
+                              readOnly
+                          />
+                        </Cell>
+                    ))}
+                  </tr>
+              ))}
+              </tbody>
+            </Board>
+          </BoardContainer>
+          <DescContainer>
+            <div>
+              <DescHeader>По горизонтали:</DescHeader>
+              {crossword.acrossDesc.map((desc, descIdx) => (
+                  <Desc key={descIdx} isFocused={crossword.descOnFocus(false, focusedWord, descIdx)}>{desc}</Desc>
+              ))}
+            </div>
+          </DescContainer>
+        </LevelContainer>
+      </>
   );
 });
 
@@ -249,24 +249,24 @@ const Menu: React.FC<MenuProps> = ({ level, setLevel, levelRef }) => {
   const assistantStateRef = useRef<AssistantAppState>();
 
   type Action =
-    | {
-        type: 'select_level';
-        level: number;
-      }
-    | {
-        type: 'enter_word';
-        n: number;
-        isDown: number;
-        answer: string
-      }
-    | {
-        type: 'delete_word';
-        n: number;
-        isDown: number;
-      }
-    | {
-        type: 'check';
-      };
+      | {
+          type: 'select_level';
+          level: number;
+        }
+      | {
+          type: 'enter_word';
+          n: number;
+          isDown: number;
+          answer: string
+        }
+      | {
+          type: 'delete_word';
+          n: number;
+          isDown: number;
+        }
+      | {
+          type: 'check';
+        };
 
   type Event = {
     type: 'smart_app_data';
@@ -422,18 +422,18 @@ const Menu: React.FC<MenuProps> = ({ level, setLevel, levelRef }) => {
   });
 
   return (
-    <>
-      <Title>Кроссворды</Title>
-      <Subtitle>Выберите уровень:</Subtitle>
-      <LvlButtonContainer>
-        {levels.map((lvl, lvlIdx) => (
-          <LvlButton onClick={() => { setLevel(lvlIdx + 1); navigate('/' + String(lvlIdx + 1)); play_level_select(lvlIdx + 1); }} ref={el => buttonRefs.current[lvlIdx] = el}>
-            <LvlButtonIndex>{lvlIdx + 1}</LvlButtonIndex>
-            <LvlButtonDesc>«{new Crossword(lvl).words[0].desc}»</LvlButtonDesc>
-          </LvlButton>
-        ))}
-      </LvlButtonContainer>
-    </>
+      <>
+        <Title>Кроссворды</Title>
+        <Subtitle>Выберите уровень:</Subtitle>
+        <LvlButtonContainer>
+          {levels.map((lvl, lvlIdx) => (
+              <LvlButton onClick={() => { setLevel(lvlIdx + 1); navigate('/' + String(lvlIdx + 1)); play_level_select(lvlIdx + 1); }} ref={el => buttonRefs.current[lvlIdx] = el}>
+                <LvlButtonIndex>{lvlIdx + 1}</LvlButtonIndex>
+                <LvlButtonDesc>«{new Crossword(lvl).words[0].desc}»</LvlButtonDesc>
+              </LvlButton>
+          ))}
+        </LvlButtonContainer>
+      </>
   );
 };
 
@@ -443,12 +443,12 @@ const App: React.FC = () => {
   const levelRef = useRef<LevelRef>(null);
 
   return (
-    <Routes>
-      <Route path='/' element={<Menu level={level} setLevel={setLevel} levelRef={levelRef} />} />
-      {levels.map((_, lvlIdx) => (
-        <Route path={'/' + String(lvlIdx + 1)} element={<Level level={lvlIdx} setLevel={setLevel} ref={levelRef} />} />
-      ))}
-    </Routes>
+      <Routes>
+        <Route path='/' element={<Menu level={level} setLevel={setLevel} levelRef={levelRef} />} />
+        {levels.map((_, lvlIdx) => (
+            <Route path={'/' + String(lvlIdx + 1)} element={<Level level={lvlIdx} setLevel={setLevel} ref={levelRef} />} />
+        ))}
+      </Routes>
   );
 };
 
