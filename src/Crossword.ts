@@ -135,4 +135,59 @@ export default class Crossword {
   public cellInWord(focusedWordDown: number, focusedWordAcross: number, row: number, col: number): boolean {
     return (focusedWordDown !== 0 && this.cellToWordsN[row][col][0] === focusedWordDown) || (focusedWordAcross !== 0 && this.cellToWordsN[row][col][1] === focusedWordAcross);
   }
+
+  //
+  public getWord(n: number, isDown: boolean): Word | null {
+    for (let word of this.words) {
+      if (word.n == n && word.isDown == isDown) {
+        return word;
+      }
+    }
+    return null;
+  }
+
+  //
+  public setWord(board: string[][], word: Word, text: string): string[][] {
+    const newBoard = board.map(row => [...row]);
+    for (let i = 0; i < text.length; i++) {
+      newBoard[word.row + (word.isDown ? i : 0)][word.col + (!word.isDown ? i : 0)] = text[i];
+    }
+    return newBoard;
+  }
+
+  //
+  public deleteWord(board: string[][], word: Word): string[][] {
+    const newBoard = board.map(row => [...row]);
+    for (let i = 0; i < word.text.length; i++) {
+      const orthoN = this.cellToWordsN[word.row + (word.isDown ? i : 0)][word.col + (!word.isDown ? i : 0)][word.isDown ? 1 : 0];
+      if (orthoN !== 0) {
+        const orthoWord = this.words[this.nToIdx[word.isDown ? 1 : 0][orthoN]];
+        let filled = true;
+        for (let j = 0; j < orthoWord.text.length; j++) {
+          if (board[orthoWord.row + (orthoWord.isDown ? j : 0)][orthoWord.col + (!orthoWord.isDown ? j : 0)] === '') {
+            filled = false;
+          }
+        }
+        if (!filled) {
+          newBoard[word.row + (word.isDown ? i : 0)][word.col + (!word.isDown ? i : 0)] = '';
+        }
+      } else {
+        newBoard[word.row + (word.isDown ? i : 0)][word.col + (!word.isDown ? i : 0)] = '';
+      }
+    }
+    return newBoard;
+  }
+
+  //
+  public getMistakes(board: string[][]): boolean[][] {
+    const newMistakes = Array.from({ length: this.rows }, () => Array(this.cols).fill(false));
+    for (let row = 0; row < this.rows; row++) {
+      for (let col = 0; col < this.cols; col++) {
+        if (board[row][col] !== this.board[row][col]) {
+          newMistakes[row][col] = true;
+        }
+      }
+    }
+    return newMistakes;
+  }
 }

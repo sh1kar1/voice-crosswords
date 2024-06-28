@@ -38,25 +38,37 @@ const GlobalStyle = createGlobalStyle`
 
   @media (max-width: 559px) {
     :root {
-      font-size: 8px;
+      font-size: 6px;
     }
   }
 
   @media (min-width: 560px) and (max-width: 1119px) {
     :root {
+      font-size: 10px;
+    }
+  }
+
+  @media (min-width: 1280px) and (max-width: 1919px) {
+    :root {
       font-size: 12px;
     }
   }
 
-  @media (min-width: 1120px) and (max-width: 1919px) {
+  @media (min-width: 1920px) and (max-width: 2559px) {
     :root {
-      font-size: 16px;
+      font-size: 18px;
     }
   }
-
-  @media (min-width: 1920px) {
+  
+  @media (min-width: 2560px) and (max-width: 3839px) {
     :root {
-      font-size: 20px;
+      font-size: 24px;
+    }
+  }
+  
+  @media (min-width: 3840px) {
+    :root {
+      font-size: 34px;
     }
   }
 `;

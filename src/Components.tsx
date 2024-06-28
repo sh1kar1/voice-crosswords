@@ -2,9 +2,9 @@
 // contains css-styles of components that are used in the 'App.tsx'
 
 import styled from 'styled-components';
-import { surfaceLiquid02 } from '@salutejs/plasma-tokens';
+import { text, surfaceLiquid02 } from '@salutejs/plasma-tokens';
 
-export const ButtonContainer = styled.div`
+export const LvlButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -14,7 +14,7 @@ export const LevelContainer = styled.div`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  height: 100vh;
+  height: 85vh;
 
   @media (orientation: portrait) {
     flex-direction: column;
@@ -60,9 +60,9 @@ export const BoardContainer = styled.div`
 export const Title = styled.div`
   display: flex;
   justify-content: center;
-  margin: 8vh;
+  margin: 5vh;
 
-  font-size: 5rem;
+  font-size: 4rem;
 `;
 
 export const Subtitle = styled.div`
@@ -71,9 +71,10 @@ export const Subtitle = styled.div`
   margin: 1.25rem;
 
   font-size: 1.75rem;
+  font-style: italic;
 `;
 
-export const ButtonIndex = styled.div`
+export const LvlButtonIndex = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -87,19 +88,20 @@ export const ButtonIndex = styled.div`
   text-align: center;
 `;
 
-export const ButtonDesc = styled.div`
+export const LvlButtonDesc = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
   height: 66%;
+  padding: 0 1rem;
 
   font-size: 1.25rem;
   text-align: center;
   line-height: 1.5;
 `;
 
-export const Button = styled.button`
+export const LvlButton = styled.button`
   all: unset;
 
   display: flex;
@@ -113,10 +115,6 @@ export const Button = styled.button`
   border: 0.15rem solid;
 
   background-color: ${surfaceLiquid02};
-
-  &:hover {
-    outline: 0.3rem solid;
-  }
 
   &:focus {
     outline: 0.3rem solid;
@@ -153,10 +151,10 @@ export const Cell = styled.td`
 
 export const Index = styled.div`
   position: absolute;
-  top: 0.05rem;
-  left: 0.05rem;
+  top: -0.05rem;
+  left: 0.0rem;
 
-  font-size: 0.7rem;
+  font-size: 0.85rem;
 
   &::selection {
     background: transparent;
@@ -179,7 +177,7 @@ export const Input = styled.input<{ inWord: boolean, isMistake: boolean, isSolve
   caret-color: transparent;
 
   &:focus {
-    border: 0.15rem solid;
+    border: 0.15rem solid ${text};
     outline: none;
   }
 
