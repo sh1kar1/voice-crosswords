@@ -1,7 +1,3 @@
-// App.tsx
-// the main file in the project
-// all rendering logic is here
-
 import React, { useState, useEffect, useRef, useImperativeHandle } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { createAssistant, createSmartappDebugger, AssistantAppState } from '@salutejs/client';
@@ -9,7 +5,7 @@ import { LvlButtonContainer, LevelContainer, DescContainer, BoardContainer, Titl
 import Crossword from './Crossword';
 import * as l from './Levels';
 
-const levels = [l.l1, l.l2, l.l3, l.l4, l.l5, l.l6, l.l7, l.l8, l.l9, l.l10];  // TODO: CHANGE THIS ARRAY AFTER ADDING A NEW LEVEL
+const levels = [l.l1, l.l2, l.l3, l.l4, l.l5, l.l6, l.l7, l.l8, l.l9, l.l10];
 
 const initializeAssistant = (getState: any) => {
   if (process.env.NODE_ENV === 'development') {
@@ -40,33 +36,29 @@ interface MenuProps {
   levelRef: React.RefObject<LevelRef>;
 }
 
-// page with board and description
 const Level = React.forwardRef<LevelRef, LevelProps>(({ level, setLevel }, ref) => {
-  const [crossword] = useState<Crossword>(new Crossword(levels[level]));                                                                   // crossword instance matching current level
-  const [board, setBoard] = useState<string[][]>(crossword.emptyBoard.map(row => [...row]));                                                    // actual board (after user inputs)
-  const [mistakes, setMistakes] = useState<boolean[][]>(Array.from({ length: crossword.rows }, () => Array(crossword.cols).fill(false)));  // cells with wrong letters
-  const [focusedWord, setFocusedWord] = useState<number[]>([0, 0]);                                                                        // number of the focused word (vertical and horizontal)
-  const [focusedCell, setFocusedCell] = useState<number[]>([-1, -1]);                                                                      // row and column of the focused cell
-  const [prevMoveVertical, setPrevMoveVertical] = useState<boolean>(true);                                                                 // true if the previous move by arrows was vertical
-  const [solved, setSolved] = useState<boolean>(false);                                                                                    // true if the crossword was solved
+  const [crossword] = useState<Crossword>(new Crossword(levels[level]));
+  const [board, setBoard] = useState<string[][]>(crossword.emptyBoard.map(row => [...row]));
+  const [mistakes, setMistakes] = useState<boolean[][]>(Array.from({ length: crossword.rows }, () => Array(crossword.cols).fill(false)));
+  const [focusedWord, setFocusedWord] = useState<number[]>([0, 0]);
+  const [focusedCell, setFocusedCell] = useState<number[]>([-1, -1]);
+  const [prevMoveVertical, setPrevMoveVertical] = useState<boolean>(true);
+  const [solved, setSolved] = useState<boolean>(false);
 
-  const inputRefs = useRef<(HTMLInputElement | null)[][]>([]);                                                                             // refs for moving focus
+  const inputRefs = useRef<(HTMLInputElement | null)[][]>([]);
   inputRefs.current = Array.from({ length: crossword.rows }, () => Array(crossword.cols).fill(null));
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    // callback for hotkeys
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Enter') {
-        // looking for mistakes or solve
         (document.activeElement as HTMLElement)?.blur();
         const newMistakes = crossword.getMistakes(board);
         setMistakes(newMistakes);
         setSolved(!newMistakes.some(row => row.some(val => val)));
 
       } else if (e.key === 'Escape') {
-        // back to levels menu
         setLevel(0);
         navigate('/');
       }
@@ -114,7 +106,6 @@ const Level = React.forwardRef<LevelRef, LevelProps>(({ level, setLevel }, ref) 
     }
   }));
 
-  // callback for user's input in cells
   const handleInputKeyDown = (row: number, col: number, key: string) => {
     const changeBoard = (val: string) => {
       const newBoard = board.map(row => [...row]);
@@ -237,7 +228,6 @@ const Level = React.forwardRef<LevelRef, LevelProps>(({ level, setLevel }, ref) 
   );
 });
 
-// page with levels menu
 const Menu: React.FC<MenuProps> = ({ level, setLevel, levelRef }) => {
   const [focusedButton, setFocusedButton] = useState<number>(1);
 

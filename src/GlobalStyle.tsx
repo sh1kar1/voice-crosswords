@@ -1,6 +1,3 @@
-// GlobalStyle.tsx
-// does what it says :)
-
 import { createGlobalStyle } from 'styled-components';
 import { text, background, gradient } from '@salutejs/plasma-tokens';
 
@@ -12,7 +9,7 @@ const GlobalStyle = createGlobalStyle`
     background-size: cover;
     background-repeat: no-repeat;
   }
-    
+
   * {
     margin: 0;
     padding: 0;
@@ -59,13 +56,13 @@ const GlobalStyle = createGlobalStyle`
       font-size: 18px;
     }
   }
-  
+
   @media (min-width: 2560px) and (max-width: 3839px) {
     :root {
       font-size: 24px;
     }
   }
-  
+
   @media (min-width: 3840px) {
     :root {
       font-size: 34px;
