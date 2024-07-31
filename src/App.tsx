@@ -5,7 +5,7 @@ import { LvlButtonContainer, LevelContainer, DescContainer, BoardContainer, Titl
 import Crossword from './Crossword';
 import * as l from './Levels';
 
-const levels = [l.l1, l.l2, l.l3, l.l4, l.l5, l.l6, l.l7, l.l8, l.l9, l.l10];
+const levels = Object.values(l);
 
 const initializeAssistant = (getState: any) => {
   if (process.env.NODE_ENV === 'development') {
