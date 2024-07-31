@@ -1,71 +1,69 @@
-# Crosswords Canvas App
+# Voice Crosswords
 
-**Классические кроссворды с поддержкой голосового управления**
+**Crossword webapp with voice assistant SberSalute created with TypeScript & React**
 
-Смартап с виртуальным ассистентом Салют для платформы [SmartMarket](https://apps.sber.ru/salute-apps/)
+https://developers.sber.ru/link/hWAUaBy
 
 ![](./assets/demo.png)
 
 ---
 
-## Задачи
+## Features
 
-- [x] Хранение кроссвордов (интерфейс, полезные методы, организация)
-- [x] Отображение кроссвордов (поля для букв, описания слов, визуальные подсказки)
-- [x] Управление с клавиатуры (навигация по кроссворду, ввод, хоткеи)
-- [x] Проверка решения уровня
-- [x] Меню выбора уровней
+- Render crossword from JSON file
+- Select level via menu
+- Navigation using keyboard or voice
+- Letter-by-letter word input and deletion using keyboard
+- Voice input and deletion of the whole word if possible
+- Solution check with mistake highlighting
+- Visual aids
+- Sber design
 
-###
+## Controls
 
-- [x] Интеграция приложения в SmartMarket
-- [x] Интеграция ассистента в приложение
-- [ ] Управление голосом (запуск, выбор уровня, проверка решения)
-- [x] Ввод слов голосом
-- [x] Озвучивание описаний слов
+### Hotkeys:
 
-###
+|            Key             | Usage                |
+|:--------------------------:|----------------------|
+| `LBM` \| `Arrows` \| `Tab` | select level or cell |
+|        `Backspace`         | backward delete      |
+|          `Space`           | forward delete       |
+|          `Enter`           | check solution       |
+|           `Esc`            | back to menu         |
 
-- [x] Адаптация отображения под все устройства (размеры и расположение элементов)
-- [x] Создание подсказок по управлению (голосовые команды, хоткеи, возможности)
-- [ ] Управление с пульта (навигация по приложению и кроссворду)
-- [x] Дизайн в сберовском стиле (фон, цвета, тёмная тема)
-- [ ] Настройка реплик ассистента согласно выбранному персонажу (он/она, ты/вы)
+### Voice commands:
 
-## Управление
+|                    Command                    | Usage          |
+|:---------------------------------------------:|----------------|
+|           `открой <номер> уровень`            | select level   |
+| `<номер> по <вертикали\|горизонтали> <слово>` | enter word     |
+|  `удали <номер> по <вертикали\|горизонтали>`  | delete word    |
+|                   `проверь`                   | check solution |
+|                `выбор уровня`                 | back to menu   |
 
-### Горячие клавиши:
-
-|                   Клавиша                    | Назначение                            |
-|:--------------------------------------------:|---------------------------------------|
-| **\<LBM\>** \| **\<Arrows\>** \| **\<Tab\>** | Выбрать уровень или ячейку кроссворда |
-|              **\<Backspace\>**               | Стирание со смещением назад           |
-|                **\<Space\>**                 | Стирание со смещением вперёд          |
-|                **\<Enter\>**                 | Проверить правильность решения        |
-|                 **\<Esc\>**                  | Вернуться в меню                      |
-
-### Голосовые команды:
-
-| Команда | Назначение |
-|:-------:|------------|
-|         |            |
-
-## Демо
+## Demonstration
 
 ![](./assets/demo.gif)
 
-## Технологии
+## Technologies
 
-- [TypeScript](https://www.typescriptlang.org/)
-- [ReactJS](https://react.dev/)
-- [SaluteJS](https://developers.sber.ru/portal/products/salutejs)
-- [PlasmaUI](https://developers.sber.ru/docs/ru/va/canvas/step-by-step/interface/plasma)
+|                                          Tech                                          | Usage                                    |
+|:--------------------------------------------------------------------------------------:|------------------------------------------|
+|                     [TypeScript](https://www.typescriptlang.org/)                      | main                                     |
+|                             [ReactJS](https://react.dev/)                              | main                                     |
+|            [SaluteJS](https://developers.sber.ru/portal/products/salutejs)             | assistant for voice navigation and input |
+| [PlasmaUI](https://developers.sber.ru/docs/ru/va/canvas/step-by-step/interface/plasma) | components for sber design               |
 
-## Авторы
+## Authors
 
-| Имя                                                | Вклад |
-|----------------------------------------------------|-------|
-| [Каблов Никита](https://github.com/Sh1kar1)        |       |
-| [Лопаткин Антон](https://github.com/lopatkinanton) |       |
-| [Попов Артемий](https://github.com/cymdaspec)      |       |
-| [Пинкас Андрей](https://github.com/mob1324)        |       |
+|                                Name                                | Contribution |
+|:------------------------------------------------------------------:|--------------|
+|       [Sh1kar1 (Nikita Kablov)](https://github.com/Sh1kar1)        | frontend     |
+| [lopatkinanton (Anton Lopatkin)](https://github.com/lopatkinanton) | backend      |
+|       [mob1324 (Andrew Pinkas)](https://github.com/mob1324)        | parsing      |
+
+## License
+
+Distributed under the Unlicense license - see [LICENSE](./LICENSE) for more information
+
+_This project was completed as part of studies at the University of Science and Technology MISIS in the Applied Mathematics program_
