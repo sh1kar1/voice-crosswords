@@ -1,0 +1,55 @@
+{
+  "project" : {
+    "id" : "spisok_zadach-4147368-tVs",
+    "name" : "spisok_zadach-4147368-tVs",
+    "folder" : "/jaicp"
+  },
+  "settings" : {
+    "language" : "ru",
+    "spellingCorrection" : false,
+    "classificationAlgorithm" : "sts",
+    "timezone" : "UTC",
+    "businessShared" : false,
+    "business" : false
+  },
+  "intents" : [ {
+    "id" : 778021,
+    "path" : "/Новый интент",
+    "enabled" : true,
+    "businessShared" : false,
+    "business" : false,
+    "phrases" : [ ],
+    "patterns" : [ ],
+    "slots" : [ {
+      "name" : "question_number",
+      "entity" : "duckling.ordinal",
+      "required" : true,
+      "prompts" : [ ],
+      "array" : false,
+      "client" : false
+    }, {
+      "name" : "в",
+      "entity" : "Новая_сущность",
+      "required" : true,
+      "prompts" : [ ],
+      "array" : false,
+      "client" : false
+    } ]
+  } ],
+  "entities" : [ {
+    "entity" : {
+      "id" : 605620,
+      "name" : "Новая_сущность",
+      "enabled" : true,
+      "type" : "annotation",
+      "priority" : 1,
+      "noSpelling" : false,
+      "noMorph" : false,
+      "phoneticSearch" : false,
+      "fuzzySearch" : false,
+      "client" : false
+    },
+    "records" : [ ]
+  } ],
+  "enabledSystemEntities" : [ "duckling.number", "duckling.time", "duckling.duration", "duckling.phone-number", "duckling.email", "duckling.url", "duckling.ordinal" ]
+}
