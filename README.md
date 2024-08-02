@@ -1,25 +1,19 @@
 # Voice Crosswords
 
-**Crossword webapp with SberSalute voice assistant, created with TypeScript & React**
+**Crossword webapp for smart TVs with SberSalute voice assistant created with TypeScript & React**
 
 https://developers.sber.ru/link/hWAUaBy
 
-![](./assets/demo.png)
+![](./assets/preview.png)
 
 <details>
 
 <summary>Table of Contents</summary>
 
 - [Overview](#overview)
-    - [Description](#description)
     - [Features](#features)
     - [Demonstration](#demonstration)
 - [Installation](#installation)
-    - [Requirements](#requirements)
-        - [Languages](#languages)
-        - [Dependencies](#dependencies)
-        - [Tools](#tools)
-    - [Steps](#steps)
 - [Usage](#usage)
     - [Hotkeys](#hotkeys)
     - [Commands](#commands)
@@ -31,12 +25,6 @@ https://developers.sber.ru/link/hWAUaBy
 ---
 
 ## Overview
-
-### Description
-
-Voice Crosswords is an interactive web application that allows users to solve crosswords using both keyboard and voice commands.
-The app is integrated with the SberSalute voice assistant providing a seamless user experience.
-It is designed to run on smart TVs and other smart devices compatible with SberSalute.
 
 ### Features
 
@@ -51,34 +39,15 @@ It is designed to run on smart TVs and other smart devices compatible with SberS
 
 ### Demonstration
 
-![](./assets/demo.gif)
+![menu](./assets/menu.png)
+![crossword](./assets/crossword.png)
 
 ## Installation
 
-### Requirements
-
-#### Languages
-
-- [TypeScript](https://www.typescriptlang.org/)
-- [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS)
-- [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML)
-
-#### Dependencies
-
-- [React](https://react.dev/)
-- [styled-components](https://styled-components.com/)
-- [SaluteJS](https://developers.sber.ru/portal/products/salutejs)
-- [PlasmaUI](https://developers.sber.ru/docs/ru/va/canvas/step-by-step/interface/plasma)
-
-#### Tools
-
-- [Git](https://git-scm.com/)
-- [Node.js](https://nodejs.org/)
-- [npm](https://www.npmjs.com/)
-
-### Steps
-
-1. Install the required [tools](#tools)
+1. Install tools:
+    - [Git](https://git-scm.com/)
+    - [Node.js](https://nodejs.org/)
+    - [npm](https://www.npmjs.com/)
 2. Clone the repository:
     ```shell
     git clone https://github.com/Sh1kar1/voice-crosswords.git
