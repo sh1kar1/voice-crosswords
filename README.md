@@ -12,8 +12,7 @@
     - [Demonstration](#demonstration)
 - [Usage](#usage)
     - [Link](#link)
-    - [Hotkeys](#hotkeys)
-    - [Commands](#commands)
+    - [Controls](#controls)
 - [Authors](#authors)
 - [License](#license)
 
@@ -28,6 +27,7 @@
 #### Languages
 
 - TypeScript & CSS & HTML
+- SmartApp DSL
 
 #### Dependencies
 
@@ -44,6 +44,7 @@
 - Voice input and deletion of the whole word if possible
 - Solution check with mistake highlighting
 - Visual aids
+- Adaptive layout
 - Sber design
 
 ### Demonstration
@@ -62,7 +63,9 @@
 
 https://developers.sber.ru/link/hWAUaBy
 
-### Hotkeys
+### Controls
+
+#### Hotkeys
 
 |            Key             | Usage                |
 |:--------------------------:|----------------------|
@@ -72,7 +75,7 @@ https://developers.sber.ru/link/hWAUaBy
 |          `Enter`           | check solution       |
 |           `Esc`            | back to menu         |
 
-### Commands
+#### Commands
 
 |                    Command                    | Usage          |
 |:---------------------------------------------:|----------------|
@@ -84,11 +87,11 @@ https://developers.sber.ru/link/hWAUaBy
 
 ## Authors
 
-|                                Name                                | Contribution |
-|:------------------------------------------------------------------:|--------------|
-|       [Sh1kar1 (Nikita Kablov)](https://github.com/Sh1kar1)        | frontend     |
-| [lopatkinanton (Anton Lopatkin)](https://github.com/lopatkinanton) | backend      |
-|       [mob1324 (Andrew Pinkas)](https://github.com/mob1324)        | parsing      |
+|                       Name                        | Contribution |
+|:-------------------------------------------------:|--------------|
+|       [Sh1kar1](https://github.com/Sh1kar1)       | frontend     |
+| [lopatkinanton](https://github.com/lopatkinanton) | backend      |
+|       [mob1324](https://github.com/mob1324)       | parsing      |
 
 ## License
 
