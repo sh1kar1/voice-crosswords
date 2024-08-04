@@ -1,10 +1,6 @@
 # Voice Crosswords
 
-**Crossword webapp for smart TVs with SberSalute voice assistant created with TypeScript & React**
-
-https://developers.sber.ru/link/hWAUaBy
-
-![](./assets/preview.png)
+**Crossword webapp for Sber smart TVs with Salute voice assistant created using TypeScript & React**
 
 <details>
 
@@ -13,8 +9,8 @@ https://developers.sber.ru/link/hWAUaBy
 - [Overview](#overview)
     - [Features](#features)
     - [Demonstration](#demonstration)
-- [Installation](#installation)
 - [Usage](#usage)
+    - [Link](#link)
     - [Hotkeys](#hotkeys)
     - [Commands](#commands)
 - [Authors](#authors)
@@ -39,39 +35,14 @@ https://developers.sber.ru/link/hWAUaBy
 
 ### Demonstration
 
-![menu](./assets/menu.png)
-![crossword](./assets/crossword.png)
-
-## Installation
-
-1. Install tools:
-    - [Git](https://git-scm.com/)
-    - [Node.js](https://nodejs.org/)
-    - [npm](https://www.npmjs.com/)
-2. Clone the repository:
-    ```shell
-    git clone https://github.com/Sh1kar1/voice-crosswords.git
-    ```
-3. Navigate to the project directory:
-    ```shell
-    cd voice-crosswords
-    ```
-4. Install dependencies:
-    ```shell
-    npm install
-    ```
-5. Start the web app:
-    ```shell
-    npm start
-    ```
-   After starting, the web app will be available at http://localhost:3000
-
-> [!WARNING]
-> The voice assistant will not work because a **secret API key** is required
->
-> (`REACT_APP_TOKEN` in [.env](./.env))
+![Menu](./assets/menu.png)
+![Crossword](./assets/crossword.png)
 
 ## Usage
+
+### Link
+
+https://developers.sber.ru/link/hWAUaBy
 
 ### Hotkeys
 
