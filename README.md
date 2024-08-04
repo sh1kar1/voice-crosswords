@@ -2,6 +2,8 @@
 
 **Crossword webapp for Sber smart TVs with Salute voice assistant created using TypeScript & React**
 
+https://developers.sber.ru/link/hWAUaBy
+
 <details>
 
 <summary>Table of Contents</summary>
@@ -11,8 +13,8 @@
     - [Features](#features)
     - [Demonstration](#demonstration)
 - [Usage](#usage)
-    - [Link](#link)
-    - [Controls](#controls)
+    - [Hotkeys](#hotkeys)
+    - [Commands](#commands)
 - [Authors](#authors)
 - [License](#license)
 
@@ -59,13 +61,7 @@
 
 ## Usage
 
-### Link
-
-https://developers.sber.ru/link/hWAUaBy
-
-### Controls
-
-#### Hotkeys
+### Hotkeys
 
 |            Key             | Usage                |
 |:--------------------------:|----------------------|
@@ -75,7 +71,7 @@ https://developers.sber.ru/link/hWAUaBy
 |          `Enter`           | check solution       |
 |           `Esc`            | back to menu         |
 
-#### Commands
+### Commands
 
 |                    Command                    | Usage          |
 |:---------------------------------------------:|----------------|
