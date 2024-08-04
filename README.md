@@ -7,6 +7,7 @@
 <summary>Table of Contents</summary>
 
 - [Overview](#overview)
+    - [Technologies](#technologies)
     - [Features](#features)
     - [Demonstration](#demonstration)
 - [Usage](#usage)
@@ -22,6 +23,18 @@
 
 ## Overview
 
+### Technologies
+
+#### Languages
+
+- TypeScript & CSS & HTML
+
+#### Dependencies
+
+- [React](https://react.dev/) & [react-router-dom](https://reactrouter.com/en/main)
+- [styled-components](https://styled-components.com/) & [PlasmaUI](https://developers.sber.ru/docs/ru/va/canvas/step-by-step/interface/plasma)
+- [SaluteJS](https://developers.sber.ru/portal/products/salutejs)
+
 ### Features
 
 - Render crossword from a JSON file
@@ -35,7 +48,12 @@
 
 ### Demonstration
 
+#### Menu
+
 ![Menu](./assets/menu.png)
+
+#### Crossword
+
 ![Crossword](./assets/crossword.png)
 
 ## Usage
