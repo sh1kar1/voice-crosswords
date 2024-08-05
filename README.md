@@ -4,22 +4,6 @@
 
 https://developers.sber.ru/link/hWAUaBy
 
-<details>
-
-<summary>Table of Contents</summary>
-
-- [Overview](#overview)
-    - [Technologies](#technologies)
-    - [Features](#features)
-    - [Demonstration](#demonstration)
-- [Usage](#usage)
-- [Authors](#authors)
-- [License](#license)
-
-</details>
-
----
-
 ## Overview
 
 ### Technologies
