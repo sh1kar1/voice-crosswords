@@ -13,8 +13,6 @@ https://developers.sber.ru/link/hWAUaBy
     - [Features](#features)
     - [Demonstration](#demonstration)
 - [Usage](#usage)
-    - [Hotkeys](#hotkeys)
-    - [Commands](#commands)
 - [Authors](#authors)
 - [License](#license)
 
@@ -26,13 +24,8 @@ https://developers.sber.ru/link/hWAUaBy
 
 ### Technologies
 
-#### Languages
-
 - TypeScript & CSS & HTML
 - SmartApp DSL
-
-#### Dependencies
-
 - [React](https://react.dev/) & [react-router-dom](https://reactrouter.com/en/main)
 - [styled-components](https://styled-components.com/) & [PlasmaUI](https://developers.sber.ru/docs/ru/va/canvas/step-by-step/interface/plasma)
 - [SaluteJS](https://developers.sber.ru/portal/products/salutejs)
@@ -51,17 +44,10 @@ https://developers.sber.ru/link/hWAUaBy
 
 ### Demonstration
 
-#### Menu
-
 ![Menu](./assets/menu.png)
-
-#### Crossword
-
 ![Crossword](./assets/crossword.png)
 
 ## Usage
-
-### Hotkeys
 
 |            Key             | Usage                |
 |:--------------------------:|----------------------|
@@ -70,8 +56,6 @@ https://developers.sber.ru/link/hWAUaBy
 |          `Space`           | forward delete       |
 |          `Enter`           | check solution       |
 |           `Esc`            | back to menu         |
-
-### Commands
 
 |                    Command                    | Usage          |
 |:---------------------------------------------:|----------------|
@@ -83,7 +67,7 @@ https://developers.sber.ru/link/hWAUaBy
 
 ## Authors
 
-|                       Name                        | Contribution |
+|                      Author                       | Contribution |
 |:-------------------------------------------------:|--------------|
 |       [Sh1kar1](https://github.com/Sh1kar1)       | frontend     |
 | [lopatkinanton](https://github.com/lopatkinanton) | backend      |
