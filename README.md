@@ -28,8 +28,8 @@ https://developers.sber.ru/link/hWAUaBy
 
 ### Demonstration
 
-![Menu](./assets/menu.png)
-![Crossword](./assets/crossword.png)
+![](./assets/menu.png)
+![](./assets/crossword.png)
 
 ## Usage
 
