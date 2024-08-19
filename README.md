@@ -1,4 +1,4 @@
-# Voice Crosswords
+# [Voice Crosswords](https://github.com/Sh1kar1/voice-crosswords)
 
 **Crossword webapp for Sber smart TVs with Salute voice assistant created using TypeScript & React**
 
@@ -60,5 +60,3 @@ https://developers.sber.ru/link/hWAUaBy
 ## License
 
 Distributed under the Unlicense license - see [LICENSE](./LICENSE) for more information
-
-_This project was completed as part of studies at [NUST MISIS](https://en.misis.ru/) in the Applied Mathematics program_
