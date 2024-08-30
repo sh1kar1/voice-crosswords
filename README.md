@@ -6,13 +6,11 @@ https://developers.sber.ru/link/hWAUaBy
 
 ## Overview
 
-### Technologies
+### Demonstration
 
-- TypeScript & CSS & HTML
-- SmartApp DSL
-- [React](https://react.dev/) & [react-router-dom](https://reactrouter.com/en/main)
-- [styled-components](https://styled-components.com/) & [PlasmaUI](https://developers.sber.ru/docs/ru/va/canvas/step-by-step/interface/plasma)
-- [SaluteJS](https://developers.sber.ru/portal/products/salutejs)
+|   ![](./assets/menu.png)    |
+|:---------------------------:|
+| ![](./assets/crossword.png) |
 
 ### Features
 
@@ -26,14 +24,17 @@ https://developers.sber.ru/link/hWAUaBy
 - Adaptive layout
 - Sber design
 
-### Demonstration
+### Technologies
 
-![](./assets/menu.png)
-![](./assets/crossword.png)
+- TypeScript & CSS & HTML
+- SmartApp DSL
+- [React](https://react.dev/) & [react-router-dom](https://reactrouter.com/en/main)
+- [styled-components](https://styled-components.com/) & [PlasmaUI](https://developers.sber.ru/docs/ru/va/canvas/step-by-step/interface/plasma)
+- [SaluteJS](https://developers.sber.ru/portal/products/salutejs)
 
 ## Usage
 
-|            Key             | Usage                |
+|            Key             | Description          |
 |:--------------------------:|----------------------|
 | `LBM` \| `Arrows` \| `Tab` | select level or cell |
 |        `Backspace`         | backward delete      |
@@ -41,7 +42,7 @@ https://developers.sber.ru/link/hWAUaBy
 |          `Enter`           | check solution       |
 |           `Esc`            | back to menu         |
 
-|                    Command                    | Usage          |
+|                    Command                    | Description    |
 |:---------------------------------------------:|----------------|
 |           `открой <номер> уровень`            | select level   |
 | `<номер> по <вертикали\|горизонтали> <слово>` | enter word     |
