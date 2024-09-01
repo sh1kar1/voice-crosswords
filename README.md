@@ -8,9 +8,8 @@ https://developers.sber.ru/link/hWAUaBy
 
 ### Demonstration
 
-|   ![](./assets/menu.png)    |
-|:---------------------------:|
-| ![](./assets/crossword.png) |
+![](./assets/menu.png)
+![](./assets/crossword.png)
 
 ### Features
 
