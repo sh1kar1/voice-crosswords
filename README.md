@@ -8,8 +8,8 @@ https://developers.sber.ru/link/hWAUaBy
 
 ### Demonstration
 
-![](./assets/menu.png)
-![](./assets/crossword.png)
+![](assets/menu.png)
+![](assets/crossword.png)
 
 ### Features
 
@@ -59,4 +59,4 @@ https://developers.sber.ru/link/hWAUaBy
 
 ## License
 
-Distributed under the Unlicense license - see [LICENSE](./LICENSE) for more information
+Distributed under the Unlicense license - see [LICENSE](LICENSE) for more information
